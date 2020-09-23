@@ -13,6 +13,33 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+//Calculates the average, safety for NaN
+const Average = ({ good, bad, all }) => {
+  if (all === 0 || (good - bad) === 0) {
+    return (
+      <div>Average: 0</div>
+    )
+  } else {
+    return (
+      <div>Average: {(good - bad / all)}</div>
+    )
+  }
+}
+
+//Calculates % of positive, safety for NaN
+const Positive = ({ good, all }) => {
+  if (all === 0 || good === 0) {
+    return (
+      <div>Positive: 0%</div>
+    )
+  } else {
+    return (
+      <div>Positive: {(good / all) * 100}%</div>
+    )
+  }
+}
+
+//Displays single statistic. if/else for NaN safety
 const Statistic = (props) => {
   if (props.text === "Average") {
     return (
@@ -26,30 +53,6 @@ const Statistic = (props) => {
     return (
         <div>{props.text}: {props.value}</div>
       )
-  }
-}
-
-const Average = ({ good, bad, all }) => {
-  if (all === 0 || (good - bad) === 0) {
-    return (
-      <div>Average: 0</div>
-    )
-  } else {
-    return (
-      <div>Average: {(good - bad / all)}</div>
-    )
-  }
-}
-
-const Positive = ({ good, all }) => {
-  if (all === 0 || good === 0) {
-    return (
-      <div>Positive: 0%</div>
-    )
-  } else {
-    return (
-      <div>Positive: {(good / all) * 100}%</div>
-    )
   }
 }
 
