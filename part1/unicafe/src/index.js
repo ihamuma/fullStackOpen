@@ -13,33 +13,45 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
-//Calculates the average, safety for NaN
+//Calculates the average, safety for NaN. returns a table element
 const Average = ({ good, bad, all }) => {
   if (all === 0 || (good - bad) === 0) {
     return (
-      <div>Average: 0</div>
+      <tr>
+        <td>Average</td>
+        <td>0</td>
+    </tr>
     )
   } else {
     return (
-      <div>Average: {(good - bad / all)}</div>
+      <tr>
+        <td>Average</td>
+        <td>{((good - bad) / all)}</td>
+      </tr>
     )
   }
 }
 
-//Calculates % of positive, safety for NaN
+//Calculates % of positive, safety for NaN. returns a table element
 const Positive = ({ good, all }) => {
   if (all === 0 || good === 0) {
     return (
-      <div>Positive: 0%</div>
+      <tr>
+        <td>Positive</td>
+        <td>0%</td>
+      </tr>
     )
   } else {
     return (
-      <div>Positive: {(good / all) * 100}%</div>
+      <tr>
+        <td>Positive</td>
+        <td>{(good / all) * 100}%</td>
+      </tr>
     )
   }
 }
 
-//Displays single statistic. if/else for NaN safety
+//Displays single statistic. if/else for NaN safety. returns a table element
 const Statistic = (props) => {
   if (props.text === "Average") {
     return (
@@ -51,7 +63,10 @@ const Statistic = (props) => {
     )
   } else {
     return (
-        <div>{props.text}: {props.value}</div>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
       )
   }
 }
@@ -64,12 +79,16 @@ const Statistics = (props) => {
   } else {
     return (
       <div>
-        <Statistic text="Good" value={props.good} />
-        <Statistic text="Neutral" value={props.neutral} />
-        <Statistic text="Bad" value={props.bad} />
-        <Statistic text="Total" value={props.all} />
-        <Statistic text="Average" good={props.good} bad={props.bad} all={props.all} />
-        <Statistic text="Positive" good={props.good} all={props.all} />
+        <table>
+          <thead>
+            <Statistic text="Good" value={props.good} />
+            <Statistic text="Neutral" value={props.neutral} />
+            <Statistic text="Bad" value={props.bad} />
+            <Statistic text="Total" value={props.all} />
+            <Statistic text="Average" good={props.good} bad={props.bad} all={props.all} />
+            <Statistic text="Positive" good={props.good} all={props.all} />
+          </thead>
+        </table>
       </div>
     )
   }
