@@ -13,6 +13,22 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const Statistic = (props) => {
+  if (props.text === "Average") {
+    return (
+      <Average good={props.good} bad={props.bad} all={props.all} />
+    )
+  } if (props.text === "Positive") {
+    return (
+      <Positive good={props.good} all={props.all} />
+    )
+  } else {
+    return (
+        <div>{props.text}: {props.value}</div>
+      )
+  }
+}
+
 const Average = ({ good, bad, all }) => {
   if (all === 0 || (good - bad) === 0) {
     return (
@@ -45,13 +61,13 @@ const Statistics = (props) => {
   } else {
     return (
       <div>
-      Good: {props.good} <br/>
-      Neutral: {props.neutral} <br/>
-      Bad: {props.bad} <br/>
-      Total: {props.all} <br/>
-      <Average good={props.good} bad={props.bad} all={props.all} />
-      <Positive good={props.good} all={props.all} />
-    </div>
+        <Statistic text="Good" value={props.good} />
+        <Statistic text="Neutral" value={props.neutral} />
+        <Statistic text="Bad" value={props.bad} />
+        <Statistic text="Total" value={props.all} />
+        <Statistic text="Average" good={props.good} bad={props.bad} all={props.all} />
+        <Statistic text="Positive" good={props.good} all={props.all} />
+      </div>
     )
   }
 }
