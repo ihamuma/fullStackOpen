@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const GetRandomInt = () => {
-  let min = 0;
+  //let min = 0;
   let max = anecdotes.length;
   return (
-     Math.floor(Math.random() * (max - min + 1)) + min
+     Math.floor(Math.random() * max)
   )
 }
 
@@ -31,13 +31,14 @@ const App = (props) => {
 
   const setToRandom = () => {
       setSelected(GetRandomInt)
-      console.log(selected)
   } 
 
   return (
     <div>
       {props.anecdotes[selected]}
-      <Button onClick={setToRandom} text="Next Anecdote" />
+      <div>
+        <Button onClick={setToRandom} text="Next Anecdote" />
+      </div>
     </div>
   )
 }
