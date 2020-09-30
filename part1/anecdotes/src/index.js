@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const GetRandomInt = () => {
-  //let min = 0;
-  let max = anecdotes.length;
+const Header = ({ text }) => {
   return (
-     Math.floor(Math.random() * max)
+      <h1>{text}</h1>
   )
 }
 
@@ -16,6 +14,14 @@ const Button = (props) => {
     </button>
   )
 }
+const GetRandomInt = () => {
+  //let min = 0;
+  let max = anecdotes.length;
+  return (
+     Math.floor(Math.random() * max)
+  )
+}
+
 
 const anecdotes = [
   'If it hurts, do it more often',
@@ -27,27 +33,32 @@ const anecdotes = [
 ]
 
 const App = (props) => {
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(GetRandomInt)
   const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
+  const [max, setMax] = useState(GetRandomInt)
 
   const vote = () => {
     const copy = [...votes]
     copy[selected] += 1
+    if (copy[selected] > votes[max]) {
+      setMax(selected)
+    }
     setVotes(copy)
   }
   
   const setToRandom = () => {
       setSelected(GetRandomInt)
-  } 
+  }
 
   return (
     <div>
+      <Header text="Anecdote of the day" />
       {props.anecdotes[selected]}
       <p>Votes: {votes[selected]}</p>
-      <div>
-        <Button onClick={vote} text="Vote" />
-        <Button onClick={setToRandom} text="Next Anecdote" />
-      </div>
+      <Button onClick={vote} text="Vote" />
+      <Button onClick={setToRandom} text="Next Anecdote" />
+      <Header text="Anecdote with most votes" />
+      {props.anecdotes[max]}
     </div>
   )
 }
