@@ -11,18 +11,9 @@ const GetRandomInt = () => {
 
 const Button = (props) => {
   return (
-  <button onClick={setSelected = (GetRandomInt)}>{props.text}</button>
-  )
-}
-
-const App = (props) => {
-  const [selected, setSelected] = useState(0)
-
-  return (
-    <div>
-      {props.anecdotes[selected]}
-      <Button text="Next Anecdote" />
-    </div>
+    <button onClick={props.onClick}>
+      {props.text}
+    </button>
   )
 }
 
@@ -34,6 +25,22 @@ const anecdotes = [
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
+
+const App = (props) => {
+  const [selected, setSelected] = useState(0)
+
+  const setToRandom = () => {
+      setSelected(GetRandomInt)
+      console.log(selected)
+  } 
+
+  return (
+    <div>
+      {props.anecdotes[selected]}
+      <Button onClick={setToRandom} text="Next Anecdote" />
+    </div>
+  )
+}
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
