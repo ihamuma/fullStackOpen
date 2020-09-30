@@ -28,7 +28,14 @@ const anecdotes = [
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
 
+  const vote = () => {
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
+  }
+  
   const setToRandom = () => {
       setSelected(GetRandomInt)
   } 
@@ -36,7 +43,9 @@ const App = (props) => {
   return (
     <div>
       {props.anecdotes[selected]}
+      <p>Votes: {votes[selected]}</p>
       <div>
+        <Button onClick={vote} text="Vote" />
         <Button onClick={setToRandom} text="Next Anecdote" />
       </div>
     </div>
