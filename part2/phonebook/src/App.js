@@ -1,23 +1,39 @@
 import React, { useState } from 'react'
 
-const Names = ({ persons }) => {
+const Names = ({ data }) => {
+  console.log('data', data)
   return (
     <div>
-      { persons.map(person => <p key={person.id}>{person.name} {person.number}</p>) }
+      { data.map(person => <p key={person.id}>{person.name} {person.number}</p>) }
     </div>
   )
 }
+/*    { name: 'Arto Hellas', number: '040-123456', id: 0 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 1 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 2 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 3 } */
 
 const App = () => {
-  const [persons, setPersons ] = useState([])
+  const [persons, setPersons] = useState([])
+  const [display, setDisplay] = useState([])
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
 
   const checkDuplicate = () => {
     if (persons.map(person => person.name).indexOf(newName) === -1) {
       return false
     } else {
       return true
+    }
+  }
+
+  const filterPersons = () => {
+    if (filter !== '') {
+      setDisplay(persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())))
+      setFilter('')
+    } else {
+      setDisplay(persons)
     }
   }
 
@@ -35,6 +51,7 @@ const App = () => {
     } else {
       window.alert(`${newName} is already added to phonebook`)
     }
+    setDisplay(persons)
   }
 
   const handleNameChange = (event) => {
@@ -43,11 +60,22 @@ const App = () => {
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
-}
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+    console.log(filter)
+  }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      Filter by name: <input
+                        value={filter}
+                        onChange={handleFilterChange}
+                      />
+      <button type="submit" onClick={filterPersons}>Filter</button>
+      <h3>Add a new name</h3>
       <form onSubmit={addPerson}>
         <div>
           Name: <input 
@@ -65,8 +93,8 @@ const App = () => {
           <button type="submit">Add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
-      <Names persons={persons} />
+      <h3>Numbers</h3>
+      <Names data={display} />
     </div>
   )
 }
