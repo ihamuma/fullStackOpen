@@ -16,7 +16,7 @@ const Names = ({ data }) => {
 const App = () => {
   const [persons, setPersons] = useState([])
   const [display, setDisplay] = useState([])
-  const [ newName, setNewName ] = useState('')
+  const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
@@ -46,12 +46,12 @@ const App = () => {
         id: persons.length,
       }
       setPersons(persons.concat(nameObject))
+      setDisplay(persons.concat(nameObject))
       setNewName('')
       setNewNumber('')
     } else {
       window.alert(`${newName} is already added to phonebook`)
     }
-    setDisplay(persons)
   }
 
   const handleNameChange = (event) => {
@@ -64,7 +64,6 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
-    console.log(filter)
   }
 
   return (
