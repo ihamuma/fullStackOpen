@@ -9,23 +9,33 @@ const Names = ({ persons }) => {
 }
 
 const App = () => {
-  const [persons, setPersons ] = useState([
-    { name: 'Arto Hellas', id: 1 }
-  ])
+  const [persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
+
+  const checkDuplicate = () => {
+    if (persons.map(person => person.name).indexOf(newName) === -1) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   const addName = (event) => {
     event.preventDefault()
-    const nameObject = {
-      name: newName,
-      id: persons.length + 1,
+    if (!checkDuplicate()) {
+      const nameObject = {
+        name: newName,
+        id: persons.length,
+      }
+      setPersons(persons.concat(nameObject))
+      setNewName('')
+    } else {
+      window.alert(`${newName} is already added to phonebook`)
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('')
   }
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value)
+      setNewName(event.target.value)
   }
 
   return (
