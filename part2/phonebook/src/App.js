@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
 import Persons from './Components/Persons'
-// import PersonForm from './Components/Persons'
-
-const checkDuplicate = ({ name, persons }) => {
-  if (persons.map(person => person.name).indexOf(name) === -1) {
-    return false
-  } else {
-    return true
-  }
-}
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -16,6 +7,14 @@ const App = () => {
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  const checkDuplicate = () => {
+    if (persons.map(person => person.name).indexOf(newName) === -1) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   const filterPersons = () => {
     if (filter !== '') {
@@ -25,10 +24,10 @@ const App = () => {
       setDisplay(persons)
     }
   }
-  
+
   const addPerson = (event) => {
     event.preventDefault()
-    if (!checkDuplicate( newName, persons )) {
+    if (!checkDuplicate()) {
       const nameObject = {
         name: newName,
         number: newNumber,
@@ -39,7 +38,7 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     } else {
-      window.alert(`${newName} has already been added to the phonebook!`)
+      window.alert(`${newName} is already added to phonebook`)
     }
   }
 
@@ -62,7 +61,7 @@ const App = () => {
                         value={filter}
                         onChange={handleFilterChange}
                       />
-      <button type="submit" onClick={filterPersons()}>Filter</button>
+      <button type="submit" onClick={filterPersons}>Filter</button>
       <h3>Add a new name</h3>
       <form onSubmit={addPerson}>
         <div>
