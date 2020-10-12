@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Persons from './Components/Persons'
-import PersonForm from './Components/Persons'
+// import PersonForm from './Components/Persons'
 
 const checkDuplicate = ({ name, persons }) => {
   if (persons.map(person => person.name).indexOf(name) === -1) {
@@ -64,7 +64,23 @@ const App = () => {
                       />
       <button type="submit" onClick={filterPersons()}>Filter</button>
       <h3>Add a new name</h3>
-      <PersonForm onSubmit={addPerson} nameValue={newName} numberValue={newNumber} nameChange={handleNameChange} numberChange={handleNumberChange} />
+      <form onSubmit={addPerson}>
+        <div>
+          Name: <input 
+                  value={newName}
+                  onChange={handleNameChange}
+                />
+        </div>
+        <div>
+          Number: <input
+                    value={newNumber}
+                    onChange={handleNumberChange}
+                  />
+        </div>
+        <div>
+          <button type="submit">Add</button>
+        </div>
+      </form>
       <h3>Numbers</h3>
       <Persons data={display} />
     </div>
