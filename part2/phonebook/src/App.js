@@ -18,6 +18,7 @@ const App = () => {
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
+        setDisplay(response.data)
       })
   }, [])
 
@@ -44,7 +45,7 @@ const App = () => {
       const nameObject = {
         name: newName,
         number: newNumber,
-        id: persons.length,
+        id: persons.length + 1,
       }
       setPersons(persons.concat(nameObject))
       setDisplay(persons.concat(nameObject))
