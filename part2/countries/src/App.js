@@ -12,7 +12,7 @@ const SearchBox = ({ onChange, value }) => {
   )
 }
 
-const DisplayBox = ({ data, criteria }) => {
+const DisplayBox = ({ data, criteria, click }) => {
 
   let filtered = data.filter(country => country.name.toLowerCase().includes(criteria.toLowerCase()))
 
@@ -21,20 +21,7 @@ const DisplayBox = ({ data, criteria }) => {
       <div>Too many matches, please specify another filter</div>
     )
   } if ( filtered.length === 1 ) {
-    return (
-      <div>
-        <h2>{filtered[0].name}</h2>
-        <p>
-          Capital: {filtered[0].capital} <br/>
-          Population: {filtered[0].population}
-        </p>
-        <h3>Languages</h3>
-        <div>
-          {filtered[0].languages.map(language => <p key={language.iso639_1} >• {language.name}</p>)}
-        </div>
-        <img width="300" src={filtered[0].flag} alt="" />
-      </div>
-    )
+    return <Country info={filtered[0]} />
   } if (filtered.length === 0) {
     return (
       <div>No matches, please specify another filter</div>
@@ -42,10 +29,33 @@ const DisplayBox = ({ data, criteria }) => {
   } else {
     return (
       <div>
-        {filtered.map(country => <p key={country.name}>{country.name}</p>)}
+        {filtered.map(country => <div key={country.name}>{country.name}<Button info={country.name} /></div>)}
       </div>
     )
   }
+}
+
+const Button = ({ info }) => {
+  return (
+    <button>Show</button>
+  )
+}
+
+const Country = ({ info }) => {
+  return (
+    <div>
+      <h2>{info.name}</h2>
+      <p>
+        Capital: {info.capital} <br/>
+        Population: {info.population}
+      </p>
+      <h3>Languages</h3>
+      <div>
+        {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
+      </div>
+      <img width="300" src={info.flag} alt="" />
+    </div>
+  )
 }
 
 const App = () => {
@@ -67,7 +77,7 @@ const App = () => {
   return (
     <div>
       <SearchBox value={search} onChange={searchChange} />
-      <DisplayBox data={countries} criteria={search} />
+      <DisplayBox data={countries} criteria={search} click={setSearch} />
     </div>
   )
 
