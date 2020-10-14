@@ -12,7 +12,7 @@ const SearchBox = ({ onChange, value }) => {
   )
 }
 
-const DisplayBox = ({ data, criteria, click }) => {
+const DisplayBox = ({ data, criteria }) => {
 
   let filtered = data.filter(country => country.name.toLowerCase().includes(criteria.toLowerCase()))
 
@@ -21,7 +21,7 @@ const DisplayBox = ({ data, criteria, click }) => {
       <div>Too many matches, please specify another filter</div>
     )
   } if ( filtered.length === 1 ) {
-    return <Country info={filtered[0]} />
+    return <Country info={filtered[0]} details={true} />
   } if (filtered.length === 0) {
     return (
       <div>No matches, please specify another filter</div>
@@ -29,33 +29,39 @@ const DisplayBox = ({ data, criteria, click }) => {
   } else {
     return (
       <div>
-        {filtered.map(country => <div key={country.name}>{country.name}<Button info={country.name} /></div>)}
+        {filtered.map(country => <Country key={country.name} info={country} details={false} />)}
       </div>
     )
   }
 }
 
-const Button = ({ info }) => {
-  return (
-    <button>Show</button>
-  )
-}
+const Country = ({ info, details }) => {
+  const [showDetails, setShowDetails] = useState(details)
 
-const Country = ({ info }) => {
-  return (
-    <div>
-      <h2>{info.name}</h2>
-      <p>
-        Capital: {info.capital} <br/>
-        Population: {info.population}
-      </p>
-      <h3>Languages</h3>
+  if (showDetails) {
+    console.log(showDetails)
+    return (
       <div>
-        {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
+        <h2>{info.name}</h2>
+        <p>
+          Capital: {info.capital} <br/>
+          Population: {info.population}
+        </p>
+        <h3>Languages</h3>
+        <div>
+          {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
+        </div>
+        <img width="300" src={info.flag} alt="" />
       </div>
-      <img width="300" src={info.flag} alt="" />
-    </div>
-  )
+    )
+  } else {
+    console.log(showDetails)
+    return (
+      <div>
+        {info.name}<button onClick={setShowDetails(true)}>Show</button>
+      </div>
+    )
+  }
 }
 
 const App = () => {
