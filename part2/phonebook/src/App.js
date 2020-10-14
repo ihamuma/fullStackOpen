@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './Components/Persons'
 import PersonForm from './Components/PersonForm'
 import Filter from './Components/Filter'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -9,6 +10,16 @@ const App = () => {
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   const checkDuplicate = () => {
     if (persons.map(person => person.name).indexOf(newName) === -1) {
