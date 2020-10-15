@@ -41,7 +41,7 @@ const Country = ({ info, details }) => {
   if (showDetails) {
     return (
       <div>
-        <h2>{info.name}</h2>
+        <h2>{info.name} <button onClick={()=>setShowDetails(false)}>Hide</button></h2>
         <p>
           Capital: {info.capital} <br/>
           Population: {info.population}
@@ -56,7 +56,7 @@ const Country = ({ info, details }) => {
   } else {
     return (
       <div>
-        {info.name}<button onClick={console.log(showDetails), setShowDetails(false)}>Show</button>
+        {info.name}<button onClick={()=>setShowDetails(true)}>Show</button>
       </div>
     )
   }
