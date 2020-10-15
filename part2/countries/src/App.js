@@ -1,66 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
-const SearchBox = ({ onChange, value }) => {
-  return (
-    <div>
-      Find countries: <input
-                        value={value}
-                        onChange={onChange}
-                      />
-    </div>
-  )
-}
-
-const DisplayBox = ({ data, criteria }) => {
-
-  let filtered = data.filter(country => country.name.toLowerCase().includes(criteria.toLowerCase()))
-
-  if ( filtered.length > 10 || criteria === '' ) {
-    return (
-      <div>Too many matches, please specify another filter</div>
-    )
-  } if ( filtered.length === 1 ) {
-    return <Country info={filtered[0]} details={true} />
-  } if (filtered.length === 0) {
-    return (
-      <div>No matches, please specify another filter</div>
-    )
-  } else {
-    return (
-      <div>
-        {filtered.map(country => <Country key={country.name} info={country} details={false} />)}
-      </div>
-    )
-  }
-}
-
-const Country = ({ info, details }) => {
-  const [showDetails, setShowDetails] = useState(details)
-
-  if (showDetails) {
-    return (
-      <div>
-        <h2>{info.name} <button onClick={()=>setShowDetails(false)}>Hide</button></h2>
-        <p>
-          Capital: {info.capital} <br/>
-          Population: {info.population}
-        </p>
-        <h3>Languages</h3>
-        <div>
-          {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
-        </div>
-        <img width="300" src={info.flag} alt="" />
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        {info.name}<button onClick={()=>setShowDetails(true)}>Show</button>
-      </div>
-    )
-  }
-}
+import SearchBox from './Components/SearchBox'
+import DisplayBox from './Components/DisplayBox'
 
 const App = () => {
   const [search, setSearch] = useState('')
