@@ -24,4 +24,4 @@ const DisplayBox = ({ data, criteria }) => {
     }
   }
 
-export default DisplayBox
+  export default DisplayBox
