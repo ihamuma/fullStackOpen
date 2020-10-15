@@ -1,5 +1,5 @@
 import React from 'react'
-import Country from './Components/Country'
+import Country from './Country'
 
 const DisplayBox = ({ data, criteria }) => {
 

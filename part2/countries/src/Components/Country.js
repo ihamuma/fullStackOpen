@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Button from './Components/Button'
+import Button from './Button'
 
 const Country = ({ info, details }) => {
     const [showDetails, setShowDetails] = useState(details)
