@@ -39,7 +39,6 @@ const Country = ({ info, details }) => {
   const [showDetails, setShowDetails] = useState(details)
 
   if (showDetails) {
-    console.log(showDetails)
     return (
       <div>
         <h2>{info.name}</h2>
@@ -55,10 +54,9 @@ const Country = ({ info, details }) => {
       </div>
     )
   } else {
-    console.log(showDetails)
     return (
       <div>
-        {info.name}<button onClick={setShowDetails(true)}>Show</button>
+        {info.name}<button onClick={console.log(showDetails), setShowDetails(false)}>Show</button>
       </div>
     )
   }
