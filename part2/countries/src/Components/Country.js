@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Button from './Button'
+import Weather from './Weather'
 
 const Country = ({ info, details }) => {
     const [showDetails, setShowDetails] = useState(details)
@@ -17,6 +18,7 @@ const Country = ({ info, details }) => {
             {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
           </div>
           <img width="300" src={info.flag} alt="" />
+          <Weather location={info.capital} />
         </div>
       )
     } else {
