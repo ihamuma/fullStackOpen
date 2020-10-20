@@ -10,7 +10,9 @@ const DisplayBox = ({ data, criteria }) => {
         <div>Too many matches, please specify another filter</div>
       )
     } if ( filtered.length === 1 ) {
-      return <Country info={filtered[0]} details={true} />
+      return (
+        <Country info={filtered[0]} details={true} />
+      )
     } if (filtered.length === 0) {
       return (
         <div>No matches, please specify another filter</div>
