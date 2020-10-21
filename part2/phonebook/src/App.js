@@ -50,10 +50,6 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const handlePersonChange = (event) => {
-    setPersons(event.target.value)
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -62,7 +58,7 @@ const App = () => {
       <h3>Add a new name</h3>
       <PersonForm onSubmit={addPerson} nameValue={newName} numberValue={newNumber} nameChange={handleNameChange} numberChange={handleNumberChange} />
       <h3>Numbers</h3>
-      <Persons data={persons} filter={filter} onDelete={handlePersonChange} />
+      <Persons data={persons} filter={filter} />
     </div>
   )
 }
