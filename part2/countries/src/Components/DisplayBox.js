@@ -5,7 +5,12 @@ const DisplayBox = ({ data, criteria }) => {
 
     let filtered = data.filter(country => country.name.toLowerCase().includes(criteria.toLowerCase()))
   
-    if ( filtered.length > 10 || criteria === '' ) {
+    if (criteria === '') {
+      return (
+        <div>Please specify a filter</div>
+      )
+    }
+    if ( filtered.length > 10 ) {
       return (
         <div>Too many matches, please specify another filter</div>
       )
