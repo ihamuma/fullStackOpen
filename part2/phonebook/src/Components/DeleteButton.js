@@ -1,16 +1,18 @@
 import React from 'react'
 import personService from '../Services/Persons'
 
-const deletePerson = ({ id, name }) => {
-    console.log('delete', id, name)
-    if (window.confirm(`Delete ${name}?`))
-    personService.remove(id)
-}
-
 const DeleteButton = ({ id, name }) => {
-    console.log('button', id, name)
+
+    const deletePerson = () => {
+        if (window.confirm(`Delete ${name}?`)) {
+            personService.remove(id).catch(error => {
+                window.alert(`${name} was already deleted from server`)
+              })
+          }
+    }
+
     return (
-        <button onClick={ ()=>deletePerson( id={id}, name={name} ) }>Delete</button>
+        <button onClick={ ()=>deletePerson() }>Delete</button>
     )
 }
 

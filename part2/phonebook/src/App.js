@@ -39,20 +39,20 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (!checkDuplicate()) {
-      const nameObject = {
-        name: newName,
-        number: newNumber,
-        id: persons.length + 1,
-      }
-      personService.create(nameObject)
-      setPersons(persons.concat(nameObject))
-      setDisplay(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
-    } else {
-      window.alert(`${newName} is already added to phonebook`)
+    const nameObject = {
+      name: newName,
+      number: newNumber,
     }
+    if (!checkDuplicate()) {
+      personService.create(nameObject)
+    } else {
+      if (window.confirm(`${newName} is already added to phonebook. Replace the old number with a new one?`)   ) {
+        personService.update(persons.find(person => person.name === newName).id, nameObject)
+      }
+    }
+    personService.getAll().then(response => { setDisplay(response); setPersons(response) })
+    setNewName('')
+    setNewNumber('')
   }
 
   const handleNameChange = (event) => {
@@ -65,7 +65,7 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
-  }
+  } 
 
   return (
     <div>
