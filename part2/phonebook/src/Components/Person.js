@@ -16,6 +16,7 @@ const Person = ({ name, number, id }) => {
     if (deleted) {
         return null
     } 
+    
     return (
         <div>
             {name} {number}<button onClick={()=>deletePerson()}>Delete</button>
