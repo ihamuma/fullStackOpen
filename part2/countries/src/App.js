@@ -22,7 +22,7 @@ const App = () => {
   return (
     <div>
       <SearchBox value={search} onChange={searchChange} />
-      <DisplayBox data={countries} criteria={search} click={setSearch} />
+      <DisplayBox data={countries} criteria={search} />
     </div>
   )
 

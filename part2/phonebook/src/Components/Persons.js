@@ -1,9 +1,13 @@
 import React from 'react'
+import Person from './Person'
 
-const Persons = ({ data }) => {
+const Persons = ({ data, filter, handleDelete }) => {
+
+  const toShow = data.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
   return (
     <div>
-      { data.map(person => <p key={person.id}>{person.name} {person.number}</p>) }
+      { toShow.map(person => <Person key={person.id} name={person.name} number={person.number} id={person.id} handleDelete={handleDelete} />) }
     </div>
   )
 }
