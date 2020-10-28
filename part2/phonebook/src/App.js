@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [errorMessage, setErrorMessage] = useState('', 'error')
+  const [message, setMessage] = useState([null, 'error'])
  
   useEffect(() => {
     personService
@@ -33,12 +33,27 @@ const App = () => {
         personService.update(person.id, newPerson)
         .then( response => {
           setPersons(persons.map(p => p.id !== person.id ? p : response))
+          setMessage([`Number for ${response.name} was updated to ${response.number}`, 'message'])
+          setTimeout(() => {
+            setMessage([null, 'message'])
+          }, 3000)
+        })
+        .catch(error => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          setMessage([`${person.name} was already deleted from server`, 'error'])
+          setTimeout(() => {
+            setMessage([null, 'error'])
+          }, 3000)
         })
       }
     } else {
       personService.create(personObject)
       .then( response => {
         setPersons(persons.concat(response))
+        setMessage([`${response.name} was added to phonebook`, 'message'])
+        setTimeout(() => {
+          setMessage([null, 'message'])
+        }, 3000)
       })
     }
     setNewName('')
@@ -62,9 +77,17 @@ const App = () => {
         personService.remove(id)
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
+          setMessage([`Deletion succesful`, 'message'])
+          setTimeout(() => {
+            setMessage([null, 'message'])
+          }, 3000)
         })
         .catch(error => {
-            setErrorMessage(`${name} was already deleted from server`)
+          setPersons(persons.filter(p => p.id !== id))
+          setMessage([`${name} was already deleted from server`, 'error'])
+          setTimeout(() => {
+            setMessage([null, 'error'])
+          }, 3000)
         })
       }
 }
@@ -72,7 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={message} />
       <Filter value={filter} onChange={handleFilterChange} />
       <h3>Add a new name</h3>
       <PersonForm onSubmit={addPerson} nameValue={newName} numberValue={newNumber} nameChange={handleNameChange} numberChange={handleNumberChange} />

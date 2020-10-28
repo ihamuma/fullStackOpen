@@ -2,48 +2,33 @@
   "persons": [
     {
       "name": "Ida Lovelace",
-      "number": "050434543",
+      "number": "39-44-5323523",
       "id": 1
     },
     {
       "name": "Ada Lovelace",
-      "number": "3456765",
+      "number": "39-44-5323523",
       "id": 2
     },
     {
       "name": "Dan Abramov",
-      "number": "743456",
+      "number": "12-43-234345",
       "id": 3
     },
     {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    },
+    {
+      "name": "Matti Meikäläinen",
+      "number": "04589213421",
+      "id": 6
+    },
+    {
       "name": "Testing Person",
-      "number": "7654323456",
+      "number": "12345678910",
       "id": 7
-    },
-    {
-      "name": "Joku Tyyppi",
-      "number": "123456789",
-      "id": 13
-    },
-    {
-      "name": "Aida Lovelace",
-      "number": "7865434567",
-      "id": 14
-    },
-    {
-      "name": "Markus Ihamuotila",
-      "number": "0458931292",
-      "id": 15
-    },
-    {
-      "name": "Jessica Mason",
-      "number": "0987654321",
-      "id": 16
-    },
-    {
-      "name": "Esa Boi",
-      "number": "0503057681",
-      "id": 17
     }
   ]
 }
