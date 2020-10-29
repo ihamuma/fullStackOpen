@@ -77,7 +77,7 @@ const App = () => {
         personService.remove(id)
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
-          setMessage([`Deletion succesful`, 'message'])
+          setMessage([`Deletion successful`, 'message'])
           setTimeout(() => {
             setMessage([null, 'message'])
           }, 3000)
