@@ -3,6 +3,8 @@ import Country from './Country'
 
 const DisplayBox = ({ data, criteria }) => {
 
+  console.log("data: " + data);
+
     let filtered = data.filter(country => country.name.toLowerCase().includes(criteria.toLowerCase()))
   
     if (criteria === '') {
