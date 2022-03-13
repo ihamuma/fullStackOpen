@@ -48,11 +48,17 @@ const App = () => {
       }
     } else {
       personService.create(personObject)
-      .then( response => {
+      .then(response => {
         setPersons(persons.concat(response))
         setMessage([`${response.name} was added to phonebook`, 'message'])
         setTimeout(() => {
           setMessage([null, 'message'])
+        }, 3000)
+      })
+      .catch(error => {
+        setMessage([`${error.message} This shows the wrong thing.`, 'error'])
+        setTimeout(() => {
+          setMessage([null, 'error'])
         }, 3000)
       })
     }
