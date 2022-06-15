@@ -18,10 +18,6 @@ const App = () => {
       .then(response => {
         setPersons(response)
       })
-      .catch(error => {
-        // this is the way to access the error message
-        console.log(error.response.data)
-      })
   }, [])
 
   const addPerson = (event) => {
