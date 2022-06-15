@@ -18,6 +18,10 @@ const App = () => {
       .then(response => {
         setPersons(response)
       })
+      .catch(error => {
+        // this is the way to access the error message
+        console.log(error.response.data)
+      })
   }, [])
 
   const addPerson = (event) => {
@@ -56,11 +60,12 @@ const App = () => {
         }, 3000)
       })
       .catch(error => {
-        setMessage([`${error.message} This shows the wrong thing.`, 'error'])
+        console.log(error.response.data)
+        setMessage([`${error.response.data.error}`, 'error'])
         setTimeout(() => {
           setMessage([null, 'error'])
         }, 3000)
-      })
+      }) 
     }
     setNewName('')
     setNewNumber('')
