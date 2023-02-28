@@ -1,7 +1,9 @@
-POST https://localhost:3001/api/persons
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "name": "JU",
-    "number": "1234567890"
+	"title": "OMG! I Used THIS Hack and Suddenly It All Works",
+	"author": "Genius Coder",
+	"url": "https://www.https-versions-suck.org",
+	"likes": 400
 }
