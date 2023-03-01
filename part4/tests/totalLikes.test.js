@@ -13,7 +13,7 @@ describe('total likes', () => {
 
     test('of multiple blogs is the sum of their likes', () => {
         const blogsList = require('./testLists').blogsList
-        expect(totalLikes(blogsList)).toBe(36)
+        expect(totalLikes(blogsList)).toEqual(36)
     })
 })
 
