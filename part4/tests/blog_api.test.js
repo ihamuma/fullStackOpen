@@ -31,6 +31,15 @@ test('all blogs are returned', async () => {
     expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
+test('identifier of blogs is called id', async () => {
+    const blogs = await helper.blogsInDb()
+
+    blogs.forEach(blog => {
+        expect(blog.id).toBeDefined()
+        expect(blog._id).toBeUndefined()
+    })
+})
+
 test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
 
@@ -77,23 +86,19 @@ test('a specific blog can be viewed', async () => {
 })
 
 test('a blog can be deleted', async () => {
-    console.log('testing deletion')
     const blogsAtStart = await helper.blogsInDb()
-    console.log('blogsAtStart', blogsAtStart)
     const blogToDelete = blogsAtStart[0]
-    console.log('deletion started')
+
     await api
         .delete(`/api/blogs/${blogToDelete.id}`)
         .expect(204)
-    console.log('deletion ended')
+
     const blogsAtEnd = await helper.blogsInDb()
-    console.log('blogsAtEnd', blogsAtEnd)
     expect(blogsAtEnd).toHaveLength(
         helper.initialBlogs.length - 1
     )
 
     const titles = blogsAtEnd.map(r => r.title)
-
     expect(titles).not.toContain(blogToDelete.title)
 })
 
