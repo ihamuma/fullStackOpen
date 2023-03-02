@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-	"title": "OMG! I Used THIS Hack and Suddenly It All Works",
-	"author": "Genius Coder",
-	"url": "https://www.https-versions-suck.org",
-	"likes": 400
+	"title": "Villieläin",
+	"author": "Ramses II",
+	"url": "suomihitit.com",
+	"likes": 6,
+	"__v": 0
 }
