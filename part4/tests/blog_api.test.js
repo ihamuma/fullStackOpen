@@ -60,6 +60,31 @@ test('a blog without likes is added with default value of 0', async () => {
     expect(addedBlog.likes).toBe(0)
 })
 
+test('creating a blog without title or url results in status 400', async () => {
+    const newBlogWithoutTitle = {
+        author: 'John Doe',
+        url: 'https://example.com/blog-post-without-title',
+        likes: 5
+    }
+
+    const newBlogWithoutUrl = {
+        title: 'Blog Post Without URL',
+        author: 'Jane Doe',
+        likes: 10
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlogWithoutTitle)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(newBlogWithoutUrl)
+        .expect(400)
+})
+
+
 test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
 
