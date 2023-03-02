@@ -40,6 +40,26 @@ test('identifier of blogs is called id', async () => {
     })
 })
 
+test('a blog without likes is added with default value of 0', async () => {
+    const newBlog = {
+        title: 'Test Blog',
+        author: 'Test Author',
+        url: 'http://example.com'
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    expect(response.body.likes).toBe(0)
+
+    const blogs = await helper.blogsInDb()
+    const addedBlog = blogs.find(blog => blog.id === response.body.id)
+    expect(addedBlog.likes).toBe(0)
+})
+
 test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
 
