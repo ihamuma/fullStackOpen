@@ -9,7 +9,7 @@ describe('most blogs', () => {
         })
     })
 
-    test('of one blog is the author that blog', () => {
+    test('of one blog is the author of that blog', () => {
         const listWithOneBlog = require('./testLists').listWithOneBlog
         expect(mostBlogs(listWithOneBlog)).toEqual({
             author: 'Edsger W. Dijkstra',
