@@ -18,15 +18,15 @@ beforeEach(async () => {
 
 describe('when some blogs exist initially', () => {
     test('all blogs are returned', async () => {
-        const response = await api.get('/api/blogs')
+        const blogs = await helper.blogsInDb()
 
-        expect(response.body).toHaveLength(helper.initialBlogs.length)
+        expect(blogs).toHaveLength(helper.initialBlogs.length)
     })
 
     test('a specific blog is within the returned blogs', async () => {
-        const response = await api.get('/api/blogs')
+        const blogs = await helper.blogsInDb()
 
-        const titles = response.body.map(b => b.title)
+        const titles = blogs.map(b => b.title)
         expect(titles).toContain(
             'HTML is easy'
         )
@@ -163,6 +163,48 @@ describe('deletion of a note', () => {
 
         const titles = blogsAtEnd.map(r => r.title)
         expect(titles).not.toContain(blogToDelete.title)
+    })
+})
+
+describe('modifying a blog', () => {
+    test('modifying likes succeeds when a blog exists', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToModify = blogsAtStart[0]
+
+        const blog = {
+            title: blogToModify.title,
+            author: blogToModify.author,
+            url: blogToModify.url,
+            likes: blogToModify.likes + 10,
+        }
+        await api
+            .put(`/api/blogs/${blogToModify.id}`)
+            .send(blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const modifiedBlog = await api.get(`/api/blogs/${blogToModify.id}`)
+        expect(modifiedBlog.body.likes).toBe(blog.likes)
+    })
+
+    test('modifying all params succeeds when a blog exists', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToModify = blogsAtStart[0]
+
+        const blog = {
+            title: 'This Title Has Been Modified',
+            author: 'Modified Author',
+            url:'modified-blog.com',
+            likes: 101,
+        }
+        await api
+            .put(`/api/blogs/${blogToModify.id}`)
+            .send(blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const modifiedBlog = await api.get(`/api/blogs/${blogToModify.id}`)
+        expect(modifiedBlog.body).toMatchObject(blog)
     })
 })
 
