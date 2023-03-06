@@ -11,7 +11,7 @@ blogsRouter.get('/:id', async (request, response) => {
     if (blog) {
         response.json(blog)
     } else {
-        response.status(404).end
+        response.status(404).end()
     }
 })
 
@@ -23,7 +23,6 @@ blogsRouter.post('/', async (request, response) => {
             error: 'Title or URL missing'
         })
     }
-
 
     const blog = new Blog({
         title: body.title,
@@ -40,7 +39,6 @@ blogsRouter.delete('/:id', async (request, response) => {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
 })
-
 
 blogsRouter.put('/:id', (request, response, next) => {
     const body = request.body
