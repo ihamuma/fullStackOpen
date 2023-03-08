@@ -76,12 +76,7 @@ describe('viewing a specific blog', () => {
 
 describe('addition of a new blog', () => {
     test('a valid blog can be added', async () => {
-        const newBlog = {
-            title: 'async/await simplifies making async calls',
-            author: 'ECMA 7',
-            url: 'asyncftw.net',
-            likes: 7
-        }
+        const newBlog = helper.newBlog
 
         await api
             .post('/api/blogs')
@@ -103,7 +98,7 @@ describe('addition of a new blog', () => {
     })
 
     test('a blog without likes is added with default value of 0', async () => {
-        const newBlog = {
+        const newBlogWithoutLikes = {
             title: 'Test Blog',
             author: 'Test Author',
             url: 'http://example.com'
@@ -111,7 +106,7 @@ describe('addition of a new blog', () => {
 
         const response = await api
             .post('/api/blogs')
-            .send(newBlog)
+            .send(newBlogWithoutLikes)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -189,7 +184,7 @@ describe('modifying a blog', () => {
 
     test('modifying all params succeeds when a blog exists', async () => {
         const blogsAtStart = await helper.blogsInDb()
-        const blogToModify = blogsAtStart[0]
+        const blogToModify = blogsAtStart[1]
 
         const blog = {
             title: 'This Title Has Been Modified',

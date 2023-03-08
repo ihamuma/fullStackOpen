@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
     {
@@ -15,10 +16,16 @@ const initialBlogs = [
     },
 ]
 
+const newBlog = {
+    title: 'async/await simplifies making async calls',
+    author: 'ECMA 7',
+    url: 'asyncftw.net',
+    likes: 7
+}
+
 const nonExistingId = async () => {
-    console.log('running nonExistingId')
     const blog = new Blog({
-        title: 'Highly Temporary Blogs',
+        title: 'Highly Temporary Blog',
         author: 'Schrödinger',
         url: 'short-lived-blogs.com',
         likes: 1
@@ -34,6 +41,15 @@ const blogsInDb = async () => {
     return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
+}
+
 module.exports = {
-    initialBlogs, nonExistingId, blogsInDb
+    initialBlogs,
+    newBlog,
+    nonExistingId,
+    blogsInDb,
+    usersInDb
 }

@@ -6,12 +6,15 @@
     "author": "Markus Ihamuotila",
     "license": "MIT",
     "dependencies": {
+        "bcrypt": "^5.1.0",
         "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.2",
         "express-async-errors": "^3.1.1",
+        "jsonwebtoken": "^9.0.0",
         "lodash": "^4.17.21",
         "mongoose": "^6.4.3",
+        "mongoose-unique-validator": "^3.1.0",
         "morgan": "^1.10.0"
     },
     "scripts": {
