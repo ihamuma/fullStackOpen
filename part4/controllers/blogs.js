@@ -22,7 +22,6 @@ blogsRouter.get('/:id', async (request, response) => {
 const getTokenFrom = request => {
     const authorization = request.get('authorization')
     if (authorization && authorization.startsWith('Bearer')) {
-        console.log('authorization.replace', authorization.replace('Bearer ', ''))
         return authorization.replace('Bearer ', '')
     }
     return null

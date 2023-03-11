@@ -42,8 +42,8 @@ describe('when there is initially one user in db', () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
-            username: 'ihamuma',
-            name: 'Markus Ihamuotila',
+            username: 'root',
+            name: 'root',
             password: 'secretaf'
         }
 
@@ -57,6 +57,34 @@ describe('when there is initially one user in db', () => {
 
         const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd).toEqual(usersAtStart)
+    })
+
+    test(' creation fails with status 400 if username is less than 3 characters', async () => {
+        const newUser = {
+            username: 'ab',
+            name: 'Test User',
+            password: 'password'
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+    })
+
+    test('creation fails with status 400 if password is less than 3 characters', async () => {
+        const newUser = {
+            username: 'testuser',
+            name: 'Test User',
+            password: 'pw'
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
     })
 })
 
