@@ -52,11 +52,9 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     const user = request.user
-    console.log('Delete - user: ', user)
-    const blog = await Blog.findById(request.params.id)
-    console.log('Delete - blog.user.toString: ', blog.user.toString())
+    const blogToDelete = await Blog.findById(request.params.id)
 
-    if (blog.user.toString() === user) {
+    if (blogToDelete.user.toString() === user) {
         await Blog.findByIdAndRemove(request.params.id)
         response.status(204).end()
     } else {
@@ -66,27 +64,19 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     }
 })
 
-blogsRouter.put('/:id', userExtractor, async (request, response) => {
+blogsRouter.put('/:id', async (request, response) => {
     const body = request.body
-    const user = request.user
 
-    const blogToModify = Blog.findById(request.params.id)
-
-    if (blogToModify.user.toString() === user) {
-        const blog = {
-            title: body.title,
-            author: body.author,
-            url: body.url,
-            likes: body.likes
-        }
-
-        const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-        response.status(201).json(updatedBlog)
-    } else {
-        response.status(401).json({
-            error: 'token must belong to user who created blog'
-        })
+    const blog = {
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes
     }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.status(201).json(updatedBlog)
+
 })
 
 module.exports = blogsRouter

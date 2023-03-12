@@ -5,8 +5,8 @@ const Blog = require('../models/blog')
 const app = require('../app')
 const api = supertest(app)
 
+let bearerToken
 
-// Reset test database to same state before running each test
 beforeEach(async () => {
     await Blog.deleteMany({})
 
@@ -14,7 +14,12 @@ beforeEach(async () => {
         .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
-})
+
+    const login = await api
+        .post('/api/login')
+        .send({ username: 'root', password: 'sekret' })
+    bearerToken = 'Bearer ' + login.body.token
+}, 10000)
 
 describe('when some blogs exist initially', () => {
     test('all blogs are returned', async () => {
@@ -36,10 +41,8 @@ describe('when some blogs exist initially', () => {
         await api
             .get('/api/blogs')
             .expect(200)
-            // Desired value defined as regex instead of string to enable title type to have other info, such as encoding, without test failing
             .expect('Content-Type', /application\/json/)
-    // Set timeout to 100000ms so test doesn't fail due to time. Fine here as test not based on performance or speed.
-    }, 100000)
+    })
 
     test('identifier of blogs is called id', async () => {
         const blogs = await helper.blogsInDb()
@@ -80,6 +83,7 @@ describe('addition of a new blog', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', bearerToken)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -106,6 +110,7 @@ describe('addition of a new blog', () => {
 
         const response = await api
             .post('/api/blogs')
+            .set('Authorization', bearerToken)
             .send(newBlogWithoutLikes)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -117,7 +122,7 @@ describe('addition of a new blog', () => {
         expect(addedBlog.likes).toBe(0)
     })
 
-    test('creating a blog without title or url results in status 400', async () => {
+    test('fails if blog without title or url, results in status 400', async () => {
         const newBlogWithoutTitle = {
             author: 'John Doe',
             url: 'https://example.com/blog-post-without-title',
@@ -132,32 +137,93 @@ describe('addition of a new blog', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', bearerToken)
             .send(newBlogWithoutTitle)
             .expect(400)
 
         await api
             .post('/api/blogs')
+            .set('Authorization', bearerToken)
             .send(newBlogWithoutUrl)
             .expect(400)
+    })
+
+    test('fails when invalid token provided', async () => {
+        const newBlog = helper.newBlog
+
+        await api
+            .post('/api/blogs')
+            .set('Authorization', 'this is not a valid token')
+            .send(newBlog)
+            .expect(401)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+        const titles = blogsAtEnd.map(blog => blog.title)
+        expect(titles).not.toContain(
+            'async/await simplifies making async calls'
+        )
+        const authors = blogsAtEnd.map(blog => blog.author)
+        expect(authors).not.toContain(
+            'ECMA 7'
+        )
     })
 })
 
 describe('deletion of a blog', () => {
     test('succeeds with status 204 if id is valid', async () => {
+        const newBlog = helper.newBlog
+
+        await api
+            .post('/api/blogs')
+            .set('Authorization', bearerToken)
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
         const blogsAtStart = await helper.blogsInDb()
-        const blogToDelete = blogsAtStart[0]
+        const blogToDelete = blogsAtStart[blogsAtStart.length - 1]
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', bearerToken)
             .expect(204)
 
         const blogsAtEnd = await helper.blogsInDb()
         expect(blogsAtEnd).toHaveLength(
-            helper.initialBlogs.length - 1
+            blogsAtStart.length - 1
         )
 
         const titles = blogsAtEnd.map(r => r.title)
         expect(titles).not.toContain(blogToDelete.title)
+    })
+
+    test('fails with status 401 if token is invalid', async () => {
+        const newBlog = helper.newBlog
+
+        await api
+            .post('/api/blogs')
+            .set('Authorization', bearerToken)
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[blogsAtStart.length - 1]
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', 'this is not a valid token')
+            .expect(401)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(
+            blogsAtStart.length
+        )
+
+        const titles = blogsAtEnd.map(r => r.title)
+        expect(titles).toContain(blogToDelete.title)
     })
 })
 
@@ -174,6 +240,7 @@ describe('modifying a blog', () => {
         }
         await api
             .put(`/api/blogs/${blogToModify.id}`)
+            .set('Authorization', bearerToken)
             .send(blog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -194,6 +261,7 @@ describe('modifying a blog', () => {
         }
         await api
             .put(`/api/blogs/${blogToModify.id}`)
+            .set('Authorization', bearerToken)
             .send(blog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
