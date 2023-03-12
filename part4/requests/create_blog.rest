@@ -1,12 +1,12 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImloYW11bWEiLCJpZCI6IjY0MDhiNGJmZTMzZDQ0ODAxOTYwYmNiZCIsImlhdCI6MTY3ODU2NDg1MywiZXhwIjoxNjc4NTY4NDUzfQ.TrtLWUvi_k9Y_A5-aZdJkg0SW1LanxDxi7S9Kb_8ouU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImloYW11bWEiLCJpZCI6IjY0MDhiNGJmZTMzZDQ0ODAxOTYwYmNiZCIsImlhdCI6MTY3ODYyMjcyOCwiZXhwIjoxNjc4NjI2MzI4fQ.6_xjOKVCxz23QtRLvOZNB4Zb43fk8zzirLORXJMQZFY
 
 {
-	"title": "Token Auhthentication Working",
-	"author": "Coding Genius",
+	"title": "Token Auhthentication Refactored?",
+	"author": "Me",
 	"url": "bearertokens.com",
-	"likes": 4,
+	"likes": 20,
 	"user": "6408b4bfe33d44801960bcbd",
 	"__v": 0
 }

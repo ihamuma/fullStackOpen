@@ -142,7 +142,7 @@ describe('addition of a new blog', () => {
     })
 })
 
-describe('deletion of a note', () => {
+describe('deletion of a blog', () => {
     test('succeeds with status 204 if id is valid', async () => {
         const blogsAtStart = await helper.blogsInDb()
         const blogToDelete = blogsAtStart[0]
