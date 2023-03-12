@@ -59,7 +59,7 @@ describe('when there is initially one user in db', () => {
         expect(usersAtEnd).toEqual(usersAtStart)
     })
 
-    test(' creation fails with status 400 if username is less than 3 characters', async () => {
+    test('creation fails with status 400 if username is less than 3 characters', async () => {
         const newUser = {
             username: 'ab',
             name: 'Test User',
