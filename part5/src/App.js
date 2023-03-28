@@ -6,15 +6,20 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [newBlogTitle, setNewBlogTitle] = useState('')
+  const [newBlogAuthor, setNewBlogAuthor] = useState('')
+  const [newBlogUrl, setNewBlogUrl] = useState('')
 
-  useEffect( () => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+  useEffect(() => {
+    async function fetchBlogs() {
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
+    }
+    fetchBlogs();
   }, [])
 
   useEffect( () => {
@@ -43,9 +48,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Invalid credentials')
+      setMessage(['Wrong username or password', 'error'])
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
@@ -55,22 +60,26 @@ const App = () => {
       window.localStorage.clear()
       blogService.setToken(null)
       setUser(null)
-    } catch (exception) {
-      setErrorMessage('Logout failed')
+      setMessage(['Logout successful', 'message'])
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setMessage(['Logout failed', 'error'])
+      setTimeout(() => {
+        setMessage(null)
       }, 5000)
     }
   }
 
   const loginForm = () => (
     <form onSubmit={ handleLogin }>
-      <h2>Log in to bloglist application</h2>
+      <h2>Log in to application</h2>
       <div>
         Username
         <input
           type='text'
-          value={username}
+          value={ username }
           name='Username'
           onChange={({ target }) => setUsername(target.value)}
         />
@@ -88,29 +97,87 @@ const App = () => {
     </form>
   )
 
+  const handleNewBlogCreation = async (event) => {
+    event.preventDefault()
+
+    try {
+      const newBlog = {
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl,
+        likes: 0
+      }
+
+      const response = await blogService.create(newBlog)
+      setBlogs(blogs.concat(response))
+
+      setNewBlogTitle('')
+      setNewBlogAuthor('')
+      setNewBlogUrl('')
+
+      setMessage([`A new blog ${newBlogTitle} by ${newBlogAuthor} added`, 'message'])
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setMessage(['Blog creation failed', 'error'])
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
+
   const blogList = () => (
     <div>
-      <h2>Blogs</h2>
-      <p>{user.name} logged in</p>
+      <p>{ user.name } logged in</p>
       <button
         onClick={ handleLogout }
       >
         Log out
       </button>
+      <form onSubmit={ handleNewBlogCreation }>
+        <h3>Create new</h3>
+        <div>
+          Title: 
+          <input 
+            type='text'
+            value={ newBlogTitle}
+            onChange={({ target }) => setNewBlogTitle(target.value)}
+            />
+        </div>
+        <div>
+          Author: 
+          <input 
+            type='text'
+            value={ newBlogAuthor}
+            onChange={({ target }) => setNewBlogAuthor(target.value)}
+            />
+        </div>
+        <div>
+          Url: 
+          <input 
+            type='text'
+            value={ newBlogUrl}
+            onChange={({ target }) => setNewBlogUrl(target.value)}
+            />
+        </div>
+        <button type='submit'>Create</button>
+      </form>
+      <h3>Blogs</h3>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={ blog.id } blog={ blog } />
       )}
     </div>
   )
 
   return (
     <div>
+      <h1>Blogs</h1>
+      <Notification message={message} />
 
-      <Notification message={errorMessage} />
-
-      {!user 
-        ? loginForm()
-        : blogList()}
+      {user 
+        ? blogList()
+        : loginForm()}
 
     </div>
   )

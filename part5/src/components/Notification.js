@@ -1,5 +1,5 @@
 import React from 'react'
-//import '../index.css'
+import '../index.css'
 
 const Notification = ({ message }) => {
     
@@ -8,8 +8,8 @@ const Notification = ({ message }) => {
     }
 
     return (
-        <div>
-            {message}
+        <div className={ message[1] }>
+            { message[0] }
         </div>
     )
 }
