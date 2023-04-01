@@ -15,10 +15,11 @@ const App = () => {
 
   useEffect(() => {
     async function fetchBlogs() {
-      const blogs = await blogService.getAll();
-      setBlogs(blogs);
+      const blogs = await blogService.getAll()
+      console.log(blogs)
+      setBlogs(blogs)
     }
-    fetchBlogs();
+    fetchBlogs()
   }, [])
 
   useEffect( () => {
@@ -47,7 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setMessage(['Wrong username or password', 'error'])
+      setMessage({ text: 'Wrong username or password', class: 'error' })
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -59,12 +60,12 @@ const App = () => {
       window.localStorage.clear()
       blogService.setToken(null)
       setUser(null)
-      setMessage(['Logout successful', 'message'])
+      setMessage({ text: 'Logout successful', class: 'message'})
       setTimeout(() => {
         setMessage(null)
       }, 5000)
     } catch (exception) {
-      setMessage(['Logout failed', 'error'])
+      setMessage({ text: 'Logout failed', class: 'error'})
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -101,12 +102,12 @@ const App = () => {
       const response = await blogService.create(newBlog)
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(response))
-      setMessage([`A new blog ${ newBlog.title } by ${ newBlog.author } added`, 'message'])
+      setMessage({ text: `A new blog ${ newBlog.title } by ${ newBlog.author } added`, class: 'message' })
       setTimeout(() => {
         setMessage(null)
       }, 5000)
     } catch (exception) {
-      setMessage(['Blog creation failed', 'error'])
+      setMessage({ text: 'Blog creation failed', class: 'error'})
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -117,7 +118,7 @@ const App = () => {
 
   const blogForm = () => {
     return (
-      <Togglable buttonLabel='Create new' ref={ blogFormRef }>
+      <Togglable viewButtonLabel='Create new' hideButtonLabel='Cancel' ref={ blogFormRef }>
         <BlogForm
           handleNewBlog={ handleNewBlog }
         />
@@ -144,7 +145,7 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <Notification message={message} />
+      <Notification message={ message } />
 
       { user 
         ? blogList()
