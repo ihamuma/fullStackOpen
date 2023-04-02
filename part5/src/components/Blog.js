@@ -16,10 +16,13 @@ const Blog = ({ blog }) => {
     <div style={blogStyle}>
       <h4>{ blog.title }</h4>
       <p>Author: { blog.author }</p>
-      <Togglable viewButtonLabel='View' hideButtonLabel='Hide'>
+      <Togglable 
+        viewButtonLabel='View' 
+        hideButtonLabel='Hide'
+      >
         <p>Url: { blog.url }</p>
         <p>Likes: { blog.likes } <button>Like</button></p>
-        <p>{ blog.user.username }</p>
+        <p>{ blog.user.name }</p>
       </Togglable>
     </div>  
   )

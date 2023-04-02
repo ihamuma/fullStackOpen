@@ -26,7 +26,7 @@ const BlogForm = ({ handleNewBlog }) => {
         Title: 
         <input 
           type='text'
-          value={ newBlogTitle}
+          value={ newBlogTitle }
           onChange={({ target }) => setNewBlogTitle(target.value)}
           />
       </div>

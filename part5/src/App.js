@@ -16,7 +16,6 @@ const App = () => {
   useEffect(() => {
     async function fetchBlogs() {
       const blogs = await blogService.getAll()
-      console.log(blogs)
       setBlogs(blogs)
     }
     fetchBlogs()
@@ -100,7 +99,9 @@ const App = () => {
   const handleNewBlog = async ( newBlog ) => {
     try {
       const response = await blogService.create(newBlog)
+      response.user = user
       blogFormRef.current.toggleVisibility()
+
       setBlogs(blogs.concat(response))
       setMessage({ text: `A new blog ${ newBlog.title } by ${ newBlog.author } added`, class: 'message' })
       setTimeout(() => {
@@ -118,7 +119,11 @@ const App = () => {
 
   const blogForm = () => {
     return (
-      <Togglable viewButtonLabel='Create new' hideButtonLabel='Cancel' ref={ blogFormRef }>
+      <Togglable 
+        viewButtonLabel='Create new' 
+        hideButtonLabel='Cancel' 
+        ref={ blogFormRef }
+      >
         <BlogForm
           handleNewBlog={ handleNewBlog }
         />
