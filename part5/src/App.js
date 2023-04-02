@@ -96,6 +96,20 @@ const App = () => {
     </form>
   )
 
+  const handleLike = async ( blog, newLikes ) => {
+    console.log(blog)
+    const updatedBlog = { ...blog, likes: newLikes }
+    console.log(updatedBlog)
+    try {
+      await blogService.update(blog.id, updatedBlog)
+    } catch (exception) {
+      setMessage({ text: `Liking ${ blog.title } failed`, class: 'error' })
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }  
+  }
+
   const handleNewBlog = async ( newBlog ) => {
     try {
       const response = await blogService.create(newBlog)
@@ -108,7 +122,7 @@ const App = () => {
         setMessage(null)
       }, 5000)
     } catch (exception) {
-      setMessage({ text: 'Blog creation failed', class: 'error'})
+      setMessage({ text: 'Blog creation failed', class: 'error' })
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -142,7 +156,7 @@ const App = () => {
       { blogForm() }
       <h3>Blogs</h3>
       {blogs.map(blog =>
-        <Blog key={ blog.id } blog={ blog } />
+        <Blog key={ blog.id } blog={ blog } handleLike = { handleLike } />
       )}
     </div>
   )

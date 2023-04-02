@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import Togglable from "./Togglable"
-import '../index.css'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
+  const [likes, setLikes] = useState(blog.likes)
+
   const blogStyle = {
     paddingLeft: 10,
     paddingBottom: 5,
@@ -12,8 +13,15 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const addLike = (event) => {
+    event.preventDefault()
+    const newLikes = likes + 1 
+    handleLike(blog, newLikes)
+    setLikes(newLikes)
+  }
+
   return (
-    <div style={blogStyle}>
+    <div style={ blogStyle }>
       <h4>{ blog.title }</h4>
       <p>Author: { blog.author }</p>
       <Togglable 
@@ -21,7 +29,7 @@ const Blog = ({ blog }) => {
         hideButtonLabel='Hide'
       >
         <p>Url: { blog.url }</p>
-        <p>Likes: { blog.likes } <button>Like</button></p>
+        <p>Likes: { likes } <button onClick={ addLike }>Like</button></p>
         <p>{ blog.user.name }</p>
       </Togglable>
     </div>  
