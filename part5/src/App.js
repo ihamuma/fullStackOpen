@@ -48,9 +48,6 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       setMessage({ text: 'Wrong username or password', class: 'error' })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     }
   }
 
@@ -60,14 +57,8 @@ const App = () => {
       blogService.setToken(null)
       setUser(null)
       setMessage({ text: 'Logout successful', class: 'message'})
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     } catch (exception) {
       setMessage({ text: 'Logout failed', class: 'error'})
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     }
   }
 
@@ -97,17 +88,26 @@ const App = () => {
   )
 
   const handleLike = async ( blog, newLikes ) => {
-    console.log(blog)
     const updatedBlog = { ...blog, likes: newLikes }
-    console.log(updatedBlog)
     try {
       await blogService.update(blog.id, updatedBlog)
     } catch (exception) {
       setMessage({ text: `Liking ${ blog.title } failed`, class: 'error' })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     }  
+  }
+
+  const handleDelete = async ( blog ) => {
+    try {
+      if (window.confirm(`Delete ${ blog.title } by ${ blog.author }?`)) {
+        await blogService.remove(blog.id)
+        setMessage({ text: `${ blog.title } by ${ blog.author } deleted successfully`, class: 'message'})
+
+        const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
+        setBlogs(updatedBlogs)
+      }
+    } catch (exception) {
+      setMessage({ text: `Error deleting ${ blog.title }`, class: 'error' })
+    }
   }
 
   const handleNewBlog = async ( newBlog ) => {
@@ -118,14 +118,12 @@ const App = () => {
 
       setBlogs(blogs.concat(response))
       setMessage({ text: `A new blog ${ newBlog.title } by ${ newBlog.author } added`, class: 'message' })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+
+      return true
     } catch (exception) {
       setMessage({ text: 'Blog creation failed', class: 'error' })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+
+      return false
     }
   }
 
@@ -158,11 +156,13 @@ const App = () => {
       { blogs
         .sort((a, b) => b.likes - a.likes)
         .map(blog =>
-        <Blog 
-          key={ blog.id } 
-          blog={ blog } 
-          handleLike={ handleLike } 
-        />
+              <Blog 
+                key={ blog.id } 
+                blog={ blog }
+                user={ user }
+                handleLike={ handleLike }
+                handleDelete={ handleDelete }
+              />
       )}
     </div>
   )

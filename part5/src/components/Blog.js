@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import Togglable from "./Togglable"
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, user, handleLike, handleDelete }) => {
   const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
@@ -20,6 +20,17 @@ const Blog = ({ blog, handleLike }) => {
     setLikes(newLikes)
   }
 
+  const deleteBlog = (event) => {
+    event.preventDefault()
+    handleDelete(blog)
+  }
+
+  const deleteButton = () => {
+    return blog.user.id === user.id
+      ? <button onClick={ deleteBlog }>Delete</button>
+      : null
+  }
+
   return (
     <div style={ blogStyle }>
       <h4>{ blog.title }</h4>
@@ -28,9 +39,9 @@ const Blog = ({ blog, handleLike }) => {
         viewButtonLabel='View' 
         hideButtonLabel='Hide'
       >
-        <p>Url: { blog.url }</p>
-        <p>Likes: { likes } <button onClick={ addLike }>Like</button></p>
-        <p>{ blog.user.name }</p>
+        <p> Url: { blog.url } </p>
+        <p> Likes: { likes } <button onClick={ addLike }>Like</button> </p>
+        <p> Posted by: { blog.user.name } { deleteButton() } </p>
       </Togglable>
     </div>  
   )

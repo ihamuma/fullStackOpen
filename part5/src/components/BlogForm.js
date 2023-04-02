@@ -5,18 +5,19 @@ const BlogForm = ({ handleNewBlog }) => {
     const [newBlogAuthor, setNewBlogAuthor] = useState('')
     const [newBlogUrl, setNewBlogUrl] = useState('')
 
-    const addBlog = (event) => {
+    const addBlog = async (event) => {
         event.preventDefault()
-        handleNewBlog({
+        const success = await handleNewBlog({
             title: newBlogTitle,
             author: newBlogAuthor,
             url: newBlogUrl,
             likes: 0
         })
-
-        setNewBlogTitle('')
-        setNewBlogAuthor('')
-        setNewBlogUrl('')
+        if (success) {
+          setNewBlogTitle('')
+          setNewBlogAuthor('')
+          setNewBlogUrl('')
+        }
     }
 
     return (
@@ -34,7 +35,7 @@ const BlogForm = ({ handleNewBlog }) => {
         Author: 
         <input 
           type='text'
-          value={ newBlogAuthor}
+          value={ newBlogAuthor }
           onChange={({ target }) => setNewBlogAuthor(target.value)}
           />
       </div>
@@ -42,7 +43,7 @@ const BlogForm = ({ handleNewBlog }) => {
         Url: 
         <input 
           type='text'
-          value={ newBlogUrl}
+          value={ newBlogUrl }
           onChange={({ target }) => setNewBlogUrl(target.value)}
           />
       </div>

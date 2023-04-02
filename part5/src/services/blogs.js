@@ -8,8 +8,8 @@ const setToken = newToken => {
 }
 
 const getAll = async () => {
-  const request = await axios.get(baseUrl)
-  return request.data
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 
 const create = async newObject => {
@@ -22,9 +22,18 @@ const create = async newObject => {
 }
 
 const update = async (id, newObject) => {
-  const request = await axios.put(`${ baseUrl }/${ id }`, newObject)
-  return request.data
+  const response = await axios.put(`${ baseUrl }/${ id }`, newObject)
+  return response.data
+}
+
+const remove = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const response = await axios.delete(`${ baseUrl }/${ id }`, config)
+  return response.data
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { setToken, getAll, create, update }
+export default { setToken, getAll, create, update, remove }
