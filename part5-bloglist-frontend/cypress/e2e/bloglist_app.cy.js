@@ -120,6 +120,57 @@ describe('Bloglist app', () => {
                     .should('not.exist')
             })
         })
+
+        describe('and many blogs exist', function() {
+            beforeEach(function() {
+                cy.createBlog({
+                    title: 'Blog 1',
+                    author: 'John Doe',
+                    url: 'https://blog1.com',
+                    likes: 3
+                })
+                cy.createBlog({
+                    title: 'Blog 2',
+                    author: 'John Doe',
+                    url: 'https://blog2.com',
+                    likes: 1
+                })
+                cy.createBlog({
+                    title: 'Blog 3',
+                    author: 'John Doe',
+                    url: 'https://blog3.com',
+                    likes: 2
+                })
+                cy.createBlog({
+                    title: 'Blog 4',
+                    author: 'John Doe',
+                    url: 'https://blog4.com',
+                    likes: 5
+                })
+                cy.createBlog({
+                    title: 'Blog 5',
+                    author: 'John Doe',
+                    url: 'https://blog5.com',
+                    likes: 4
+                })
+            })
+
+            it('blogs are ordered by likes', () => {
+                cy.get('#blog-div')
+                    .then((blogs) => {
+                        let prevLikes = Number.MAX_SAFE_INTEGER
+                        for (let i = 0; i < blogs.length; i++) {
+                            const likeArray = blogs[i]
+                                .querySelector('#likes-p')
+                                .textContent.split(' ')
+                            const blogLikes = parseInt(likeArray[2])
+                            expect(blogLikes).to.be.lte(prevLikes)
+                            prevLikes = blogLikes
+                        }
+                    })
+            })
+
+        })
     })
 
 })

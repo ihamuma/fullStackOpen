@@ -14,6 +14,8 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
         marginBottom: 5
     }
 
+    const likeStyle = {}
+
     const addLike = (event) => {
         event.preventDefault()
         const newLikes = likes + 1
@@ -41,7 +43,7 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
                 hideButtonLabel='Hide'
             >
                 <p> Url: { blog.url } </p>
-                <p id='likes-p'> Likes: { likes } <button onClick={ addLike } id='like-button'>Like</button> </p>
+                <p id='likes-p' style={ likeStyle }> Likes: { likes } <button onClick={ addLike } id='like-button'>Like</button> </p>
                 <p> Posted by: { blog.user.name } { deleteButton() } </p>
             </Togglable>
         </div>
