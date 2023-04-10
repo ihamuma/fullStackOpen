@@ -24,7 +24,7 @@ describe('Bloglist app', () => {
             .and('contain', 'Log in')
     })
 
-    describe.only('Login', function() {
+    describe('Login', function() {
         it('succeeds with correct credentials', function() {
             cy.get('#username').type('tester')
             cy.get('#password').type('sekret')
@@ -47,7 +47,7 @@ describe('Bloglist app', () => {
         })
     })
 
-    describe('when logged in', function() {
+    describe('When logged in', function() {
 
         beforeEach(function() {
             cy.login({ username: 'tester', password: 'sekret' })
@@ -60,9 +60,10 @@ describe('Bloglist app', () => {
             cy.get('#newBlogUrl').type('cypress-blog.com')
             cy.get('#createBlog-button').click()
 
-            cy.contains('Cypress created this')
-            cy.contains('Cypress')
-            cy.contains('cypress-blog.com')
+            cy.get('#blogList')
+                .should('contain', 'Cypress created this')
+                .and('contain', 'Cypress')
+                .and('contain', 'cypress-blog.com')
         })
 
         describe('and a blog exists', function() {
