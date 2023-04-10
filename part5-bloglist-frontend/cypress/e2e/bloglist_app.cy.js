@@ -66,7 +66,7 @@ describe('Bloglist app', () => {
                 .and('contain', 'cypress-blog.com')
         })
 
-        describe('and a blog exists', function() {
+        describe.only('and a blog exists, it', function() {
             beforeEach(function() {
                 cy.createBlog({
                     title: 'Cypress created this too',
@@ -75,14 +75,34 @@ describe('Bloglist app', () => {
                 })
             })
 
-            it('it can be viewed', function() {
-                cy.contains('View').click()
-                cy.contains('cypress-blog-2.com')
+            it('can be viewed', function() {
+                cy.get('#blog-div').as('newBlog')
+                cy.get('@newBlog').contains('View').click()
+                cy.get('@newBlog').contains('cypress-blog-2.com')
             })
 
-            it('it can be liked', function() {
-                cy.contains('View').click()
-                cy.contains('Like').click()
+            it('can be liked', function() {
+                cy.get('#blog-div').as('newBlog')
+                cy.get('@newBlog').contains('View').click()
+                cy.get('@newBlog').get('#likes-p').contains(0)
+
+                cy.get('@newBlog').contains('Like').click()
+                cy.get('@newBlog').get('#likes-p').contains(1)
+            })
+
+            it('can be deleted', function() {
+                cy.get('#blog-div').as('newBlog')
+                cy.get('@newBlog').contains('View').click()
+                cy.get('@newBlog').contains('Delete').click()
+
+                cy.get('#blogList')
+                    .should('not.contain', 'Cypress created this too')
+                    .and('not.contain', 'Cypress as well')
+                    .and('not.contain', 'cypress-blog-2.com')
+
+                cy.get('.message')
+                    .should('contain', 'deleted successfully')
+                    .and('have.css', 'border-style', 'solid')
             })
         })
     })

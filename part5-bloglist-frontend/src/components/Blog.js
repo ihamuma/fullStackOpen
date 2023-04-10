@@ -33,7 +33,7 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
     }
 
     return (
-        <div style={ blogStyle }>
+        <div id='blog-div' style={ blogStyle }>
             <h4>{ blog.title }</h4>
             <p>Author: { blog.author }</p>
             <Togglable
@@ -41,7 +41,7 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
                 hideButtonLabel='Hide'
             >
                 <p> Url: { blog.url } </p>
-                <p> Likes: { likes } <button onClick={ addLike }>Like</button> </p>
+                <p id='likes-p'> Likes: { likes } <button onClick={ addLike } id='like-button'>Like</button> </p>
                 <p> Posted by: { blog.user.name } { deleteButton() } </p>
             </Togglable>
         </div>
