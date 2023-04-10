@@ -1,13 +1,12 @@
 describe('Bloglist app', () => {
 
     beforeEach(function() {
-        cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-        const user = {
+        cy.resetTestDb()
+        cy.createUser({
             name: 'Testy Tester',
             username: 'tester',
             password: 'sekret'
-        }
-        cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+        })
         cy.visit('')
     })
 
@@ -66,7 +65,7 @@ describe('Bloglist app', () => {
                 .and('contain', 'cypress-blog.com')
         })
 
-        describe.only('and a blog exists, it', function() {
+        describe('and a blog exists', function() {
             beforeEach(function() {
                 cy.createBlog({
                     title: 'Cypress created this too',
@@ -75,13 +74,13 @@ describe('Bloglist app', () => {
                 })
             })
 
-            it('can be viewed', function() {
+            it('it can be viewed', function() {
                 cy.get('#blog-div').as('newBlog')
                 cy.get('@newBlog').contains('View').click()
                 cy.get('@newBlog').contains('cypress-blog-2.com')
             })
 
-            it('can be liked', function() {
+            it('it can be liked', function() {
                 cy.get('#blog-div').as('newBlog')
                 cy.get('@newBlog').contains('View').click()
                 cy.get('@newBlog').get('#likes-p').contains(0)
@@ -90,7 +89,7 @@ describe('Bloglist app', () => {
                 cy.get('@newBlog').get('#likes-p').contains(1)
             })
 
-            it('can be deleted', function() {
+            it('it can be deleted', function() {
                 cy.get('#blog-div').as('newBlog')
                 cy.get('@newBlog').contains('View').click()
                 cy.get('@newBlog').contains('Delete').click()
@@ -103,6 +102,22 @@ describe('Bloglist app', () => {
                 cy.get('.message')
                     .should('contain', 'deleted successfully')
                     .and('have.css', 'border-style', 'solid')
+            })
+
+            it('it cannot be deleted by another user', function() {
+                cy.createUser({
+                    name: 'Evil Tester',
+                    username: 'evil',
+                    password: 'evil-sekret'
+                })
+                cy.login({ username: 'evil', password: 'evil-sekret' })
+
+                cy.get('#blog-div').as('newBlog')
+                cy.get('@newBlog').contains('View').click()
+                cy.get('@newBlog')
+                    .should('not.contain', 'Delete')
+                cy.get('#delete-button')
+                    .should('not.exist')
             })
         })
     })

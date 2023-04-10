@@ -1,3 +1,16 @@
+Cypress.Commands.add('resetTestDb', () => {
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+})
+
+Cypress.Commands.add('createUser', ({ name, username, password }) => {
+    const user = {
+        name: name,
+        username: username,
+        password: password
+    }
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+})
+
 Cypress.Commands.add('login', ({ username, password }) => {
     cy.request('POST', `${Cypress.env('BACKEND')}/login`, {
         username, password

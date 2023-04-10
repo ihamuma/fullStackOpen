@@ -28,7 +28,7 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
 
     const deleteButton = () => {
         return blog.user.id === user.id
-            ? <button onClick={ deleteBlog }>Delete</button>
+            ? <button onClick={ deleteBlog } id='delete-button'>Delete</button>
             : null
     }
 
