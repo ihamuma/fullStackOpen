@@ -15,7 +15,7 @@ describe('Bloglist app', () => {
         cy.contains('Blogs')
     })
 
-    it.only('login form is shown', function() {
+    it('login form is shown', function() {
         cy.contains('Log in to application')
         cy.get('#loginForm')
             .should('contain', 'Log in to application')
@@ -24,25 +24,27 @@ describe('Bloglist app', () => {
             .and('contain', 'Log in')
     })
 
-    it('user can log in', function() {
-        cy.get('#username').type('tester')
-        cy.get('#password').type('sekret')
-        cy.get('#login-button').click()
+    describe.only('Login', function() {
+        it('succeeds with correct credentials', function() {
+            cy.get('#username').type('tester')
+            cy.get('#password').type('sekret')
+            cy.get('#login-button').click()
 
-        cy.contains('Testy Tester logged in')
-    })
+            cy.contains('Testy Tester logged in')
+        })
 
-    it('login fails with wrong password', function() {
-        cy.get('#username').type('tester')
-        cy.get('#password').type('wrong')
-        cy.get('#login-button').click()
+        it('fails with wrong credentials', function() {
+            cy.get('#username').type('tester')
+            cy.get('#password').type('wrong')
+            cy.get('#login-button').click()
 
-        cy.get('.error')
-            .should('contain', 'Wrong username or password')
-            .and('have.css', 'color', 'rgb(255, 0, 0)')
-            .and('have.css', 'border-style', 'solid')
+            cy.get('.error')
+                .should('contain', 'Wrong username or password')
+                .and('have.css', 'color', 'rgb(255, 0, 0)')
+                .and('have.css', 'border-style', 'solid')
 
-        cy.get('html').should('not.contain', 'Testy Tester logged in')
+            cy.get('html').should('not.contain', 'Testy Tester logged in')
+        })
     })
 
     describe('when logged in', function() {
