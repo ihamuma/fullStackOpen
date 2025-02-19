@@ -4,7 +4,8 @@
   "description": "FullStackOpen Part 9",
   "scripts": {
     "ts-node": "ts-node",
-    "calculateExercises": "ts-node exerciseCalculator.ts"
+    "calculateBmi": "ts-node bmiCalculator.ts",
+    "calculateExercise": "ts-node exerciseCalculator.ts"
   },
   "author": "Markus Ihamuotila",
   "license": "ISC",

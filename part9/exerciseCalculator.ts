@@ -27,7 +27,24 @@ const calculateExercise = (exercise: number[], target: number): ExerciseResult =
     }
 }
 
-const exercise = [3, 2.3, 2, 4.5, 0, 3, 1];
-const target = 1.5;
+const process_args = process.argv.slice(2);
+if (process_args.length < 2) {
+    throw new Error("Usage: npm run calculateExercise <target> <exercise1> <exercise2> ... <exerciseN>");
+    process.exit(1);
+}
 
-console.log(calculateExercise(exercise, target));
+const target = Number(process_args[0]);
+const exercise = process_args.slice(1).map(day => {
+    const num = Number(day);
+    if (isNaN(num)) {
+        throw new Error(`Invalid input: ${day} is not a number`);
+        process.exit(1);
+    }
+    return num;
+});
+
+try {
+    console.log(calculateExercise(exercise, target));
+} catch (error) {
+    console.log("Error calculating exercise", error.message);
+}
