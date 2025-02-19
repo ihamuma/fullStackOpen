@@ -46,5 +46,9 @@ const exercise = process_args.slice(1).map(day => {
 try {
     console.log(calculateExercise(exercise, target));
 } catch (error) {
+    if (error instanceof Error) {
     console.log("Error calculating exercise", error.message);
+    } else {    
+        console.log("Unknown error calculating exercise");
+    }
 }
