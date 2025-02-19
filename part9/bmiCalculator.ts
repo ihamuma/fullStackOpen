@@ -5,8 +5,8 @@ interface BmiResult {
     range: string;
 }
 
-export const calculateBmiRange = (height: number, weight: number): BmiResult => {
-    const bmi = weight / ((height / 100) ** 2)
+export const calculateBmi = (height: number, weight: number): BmiResult => {
+    const bmi = weight / ((height / 100) ** 2);
     const range = getBmiRange(bmi);
     const rounded_bmi = bmi.toFixed(2);
     return {
@@ -62,7 +62,7 @@ if (require.main === module) {
     }
 
     try {
-        console.log(calculateBmiRange(height, weight));
+        console.log(calculateBmi(height, weight));
     } catch (error) {
         if (error instanceof Error) {
             console.log("Error calculating BMI", error.message)
