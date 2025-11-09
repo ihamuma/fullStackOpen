@@ -24,8 +24,8 @@ const calculateExercise = (exercise: number[], target: number): ExerciseResult =
         ratingDescription,
         target,
         average
-    }
-}
+    };
+};
 
 const process_args = process.argv.slice(2);
 if (process_args.length < 2) {

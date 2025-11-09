@@ -14,8 +14,8 @@ export const calculateBmi = (height: number, weight: number): BmiResult => {
         weight,
         bmi: Number(rounded_bmi),
         range
-    }
-}
+    };
+};
 
 const getBmiRange = (bmi: number): string => {
     let range: string;
@@ -37,8 +37,8 @@ const getBmiRange = (bmi: number): string => {
             range = "Unknown";
     }
 
-    return range
-}
+    return range;
+};
 
 if (require.main === module) {
     const args = process.argv.slice(2);
@@ -65,7 +65,7 @@ if (require.main === module) {
         console.log(calculateBmi(height, weight));
     } catch (error) {
         if (error instanceof Error) {
-            console.log("Error calculating BMI", error.message)
+            console.log("Error calculating BMI", error.message);
         } else {
             console.log("Unknown error calculating BMI");
         }
