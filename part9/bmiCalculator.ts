@@ -36,7 +36,6 @@ const getBmiRange = (bmi: number): string => {
         default:
             range = "Unknown";
     }
-
     return range;
 };
 
