@@ -1,8 +1,8 @@
 interface BmiResult {
-    height: number;
-    weight: number;
-    bmi: number;
-    range: string;
+    height: number,
+    weight: number,
+    bmi: number,
+    range: string,
 }
 
 export const calculateBmi = (height: number, weight: number): BmiResult => {
@@ -24,10 +24,10 @@ const getBmiRange = (bmi: number): string => {
         case bmi < 18.5:
             range = "Underweight";
             break;
-        case bmi >= 18.5 && bmi < 24.9:
+        case bmi >= 18.5 && bmi < 25:
             range = "Normal";
             break;
-        case bmi >= 25 && bmi < 29.9:
+        case bmi >= 25 && bmi < 30:
             range = "Overweight";
             break;
         case bmi >= 30:
@@ -44,7 +44,6 @@ if (require.main === module) {
 
     if (args.length !== 2) {
         throw new Error("Usage: npm run calculateBmi <height> <weight>");
-        process.exit(1);
     }
 
     const height = Number(args[0]);
@@ -52,12 +51,10 @@ if (require.main === module) {
 
     if (isNaN(height) || isNaN(weight)) {
         throw new Error("Invalid arguments");
-        process.exit(1);
     }
 
     if (height <= 0 || weight <= 0) {
         throw new Error("Height and weight must be positive non-zero numbers");
-        process.exit(1);
     }
 
     try {
