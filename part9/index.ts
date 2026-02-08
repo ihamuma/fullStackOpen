@@ -38,8 +38,8 @@ app.get('/bmi', (req, res) => {
 });
 
 app.post('/exercises', (req, res) => {
-    console.log(req.body);
     const body = req.body as Record<string, unknown>;
+
     const exercises = body['daily_exercises'];
     if (exercises === undefined) {
         res.status(400).json({ error: "Missing parameter daily_exercises" });
