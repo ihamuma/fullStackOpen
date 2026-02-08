@@ -4,14 +4,16 @@
   "description": "Backend for part 9c patientor",
   "main": "index.ts",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint .",
+    "start": "node build/index.js"
   },
   "author": "Markus Ihamuotila",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@stylistic/eslint-plugin": "^5.7.1",
-    "@types/eslint__js": "^9.14.0",
     "@types/express": "^5.0.6",
     "eslint": "^9.39.2",
     "ts-node-dev": "^2.0.0",
