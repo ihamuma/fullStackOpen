@@ -64,8 +64,9 @@ app.post('/exercises', (req, res) => {
         res.status(400).json({ error: "Malformatted parameters - target should be a number"});
         return;
     }
+
     const result = calculateExercise(exercises, parsedTarget);
-    res.send(result);
+    res.json(result);
 });
 
 app.listen(PORT, () => {
