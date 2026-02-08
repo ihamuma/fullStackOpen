@@ -30,14 +30,16 @@ export const calculateExercise = (exercises: number[], target: number): Exercise
 if (require.main === module) {
     const process_args = process.argv.slice(2);
     if (process_args.length < 2) {
-        throw new Error("Usage: npm run calculateExercise <target> <exercise1> <exercise2> ... <exerciseN>");
+        console.error("Usage: npm run calculateExercise <target> <exercise1> <exercise2> ... <exerciseN>");
+        process.exit(1);
     }
 
     const target = Number(process_args[0]);
     const exercise = process_args.slice(1).map(day => {
         const num = Number(day);
         if (isNaN(num)) {
-            throw new Error(`Invalid input: ${day} is not a number`);
+            console.error(`Invalid input: ${day} is not a number`);
+            process.exit(1);
         }
         return num;
     });
@@ -46,9 +48,11 @@ if (require.main === module) {
         console.log(calculateExercise(exercise, target));
     } catch (error) {
         if (error instanceof Error) {
-            console.log("Error calculating exercise", error.message);
+            console.error("Error calculating exercise", error.message);
+            process.exit(1);
         } else {    
-            console.log("Unknown error calculating exercise");
+            console.error("Unknown error calculating exercise");
+            process.exit(1);
         }
     }
 }

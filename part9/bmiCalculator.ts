@@ -36,27 +36,32 @@ if (require.main === module) {
     const args = process.argv.slice(2);
 
     if (args.length !== 2) {
-        throw new Error("Usage: npm run calculateBmi <height> <weight>");
+        console.error("Usage: npm run calculateBmi <height> <weight>");
+        process.exit(1);
     }
 
     const height = Number(args[0]);
     const weight = Number(args[1]);
 
     if (isNaN(height) || isNaN(weight)) {
-        throw new Error("Invalid arguments");
+        console.error("Invalid arguments");
+        process.exit(1);
     }
 
     if (height <= 0 || weight <= 0) {
-        throw new Error("Height and weight must be positive non-zero numbers");
+        console.error("Height and weight must be positive non-zero numbers");
+        process.exit(1);
     }
 
     try {
         console.log(calculateBmi(height, weight));
     } catch (error) {
         if (error instanceof Error) {
-            console.log("Error calculating BMI", error.message);
+            console.error("Error calculating BMI", error.message);
+            process.exit(1);
         } else {
-            console.log("Unknown error calculating BMI");
+            console.error("Unknown error calculating BMI");
+            process.exit(1);
         }
     }
 }
