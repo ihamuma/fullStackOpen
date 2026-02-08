@@ -11,10 +11,11 @@ interface ExerciseResult {
 export const calculateExercise = (exercises: number[], target: number): ExerciseResult => {
     const periodLength = exercises.length;
     const trainingDays = exercises.filter(day => day > 0).length;
-    const average = exercises.reduce((a, b) => a + b, 0) / periodLength;
+    const average = (exercises.reduce((a, b) => a + b, 0) / periodLength);
     const success = average >= target;
     const rating = average < target ? 1 : average === target ? 2 : 3;
     const ratingDescription = rating === 1 ? "You didn't reach your target" : rating === 2 ? "You reached your target" : "You exceeded your target";
+    const roundedAverage = average.toFixed(2);
     return {
         periodLength,
         trainingDays,
@@ -22,7 +23,7 @@ export const calculateExercise = (exercises: number[], target: number): Exercise
         rating,
         ratingDescription,
         target,
-        average
+        average: Number(roundedAverage)
     };
 };
 
@@ -30,7 +31,6 @@ if (require.main === module) {
     const process_args = process.argv.slice(2);
     if (process_args.length < 2) {
         throw new Error("Usage: npm run calculateExercise <target> <exercise1> <exercise2> ... <exerciseN>");
-        process.exit(1);
     }
 
     const target = Number(process_args[0]);
@@ -38,7 +38,6 @@ if (require.main === module) {
         const num = Number(day);
         if (isNaN(num)) {
             throw new Error(`Invalid input: ${day} is not a number`);
-            process.exit(1);
         }
         return num;
     });
