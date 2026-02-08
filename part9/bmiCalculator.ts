@@ -8,35 +8,28 @@ interface BmiResult {
 export const calculateBmi = (height: number, weight: number): BmiResult => {
     const bmi = weight / ((height / 100) ** 2);
     const range = getBmiRange(bmi);
-    const rounded_bmi = bmi.toFixed(2);
+    const roundedBmi = bmi.toFixed(2);
     return {
         height,
         weight,
-        bmi: Number(rounded_bmi),
+        bmi: Number(roundedBmi),
         range
     };
 };
 
 const getBmiRange = (bmi: number): string => {
-    let range: string;
-
     switch (true) {
         case bmi < 18.5:
-            range = "Underweight";
-            break;
+            return "Underweight";
         case bmi >= 18.5 && bmi < 25:
-            range = "Normal";
-            break;
+            return "Normal";
         case bmi >= 25 && bmi < 30:
-            range = "Overweight";
-            break;
+            return "Overweight";
         case bmi >= 30:
-            range = "Obese";
-            break;
+            return "Obese";
         default:
-            range = "Unknown";
+            return "Unknown";
     }
-    return range;
 };
 
 if (require.main === module) {

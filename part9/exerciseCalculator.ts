@@ -46,7 +46,7 @@ if (require.main === module) {
         console.log(calculateExercise(exercise, target));
     } catch (error) {
         if (error instanceof Error) {
-        console.log("Error calculating exercise", error.message);
+            console.log("Error calculating exercise", error.message);
         } else {    
             console.log("Unknown error calculating exercise");
         }
