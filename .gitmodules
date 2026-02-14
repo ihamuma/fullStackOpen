@@ -1,0 +1,3 @@
+[submodule "part9/9.8-14-patientor/patientor-frontend"]
+	path = part9/9.8-14-patientor/patientor-frontend
+	url = git@github.com:ihamuma/patientor.git
