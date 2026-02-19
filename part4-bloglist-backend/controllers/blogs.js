@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const mongoose = require('mongoose')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
@@ -11,6 +12,9 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.get('/:id', async (request, response) => {
+    if (!mongoose.isValidObjectId(request.params.id)) {
+        return response.status(400).json({ error: 'invalid id' })
+    }
     const blog = await Blog.findById(request.params.id)
     if (blog) {
         response.json(blog)
@@ -51,6 +55,9 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+    if (!mongoose.isValidObjectId(request.params.id)) {
+        return response.status(400).json({ error: 'invalid id' })
+    }
     const user = request.user
     const blogToDelete = await Blog.findById(request.params.id)
 
@@ -65,6 +72,9 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
+    if (!mongoose.isValidObjectId(request.params.id)) {
+        return response.status(400).json({ error: 'invalid id' })
+    }
     const body = request.body
 
     const blog = {
