@@ -6,6 +6,10 @@ const User = require('../models/user')
 loginRouter.post('/', async (request, response) => {
     const { username, password } = request.body
 
+    if (typeof username !== 'string' || typeof password !== 'string') {
+        return response.status(400).json({ error: 'invalid request' })
+    }
+
     const user = await User.findOne({ username })
     const passwordCorrect = user === null
         ? false
