@@ -2,12 +2,12 @@
   "name": "patientor-backend",
   "version": "1.0.0",
   "description": "Backend for part 9c patientor",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "tsc": "tsc",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint .",
-    "start": "node build/index.js"
+    "start": "node build/src/index.js"
   },
   "author": "Markus Ihamuotila",
   "license": "ISC",
