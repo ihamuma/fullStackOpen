@@ -40,10 +40,10 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     const user = await User.findById(request.user)
 
     const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes || 0,
+        title: String(body.title),
+        author: body.author !== undefined ? String(body.author) : undefined,
+        url: String(body.url),
+        likes: Number(body.likes) || 0,
         user: user.id
     })
 
@@ -79,13 +79,17 @@ blogsRouter.put('/:id', async (request, response) => {
     if (!mongoose.isValidObjectId(request.params.id)) {
         return response.status(400).json({ error: 'invalid id' })
     }
-    const body = request.body
+    const { title, author, url, likes } = request.body
+
+    if (typeof title !== 'string' || typeof url !== 'string') {
+        return response.status(400).json({ error: 'title and url must be strings' })
+    }
 
     const blog = {
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes
+        title: String(title),
+        author: author !== undefined ? String(author) : undefined,
+        url: String(url),
+        likes: Number(likes) || 0
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
