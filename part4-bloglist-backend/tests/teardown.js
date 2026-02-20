@@ -1,3 +1,5 @@
-module.exports = () => {
-    process.exit(0)
+module.exports = async () => {
+    if (global.__MONGOSERVER) {
+        await global.__MONGOSERVER.stop()
+    }
 }
