@@ -14,6 +14,7 @@ const mongoose = require('mongoose')
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
+    message: { error: 'too many requests, please try again later' },
 })
 
 const loginLimiter = rateLimit({
@@ -35,7 +36,9 @@ mongoose.connect(config.MONGODB_URI)
     })
 
 app.use(cors())
-app.use(limiter)
+if (process.env.NODE_ENV !== 'test') {
+    app.use(limiter)
+}
 app.use(express.static('build'))
 app.use(express.json())
 
