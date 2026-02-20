@@ -1,7 +1,9 @@
 const supertest = require('supertest')
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const app = require('../app')
 const api = supertest(app)
 
@@ -9,6 +11,11 @@ let bearerToken
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+    await user.save()
 
     const blogObjects = helper.initialBlogs
         .map(blog => new Blog(blog))
@@ -242,7 +249,7 @@ describe('modifying a blog', () => {
             .put(`/api/blogs/${blogToModify.id}`)
             .set('Authorization', bearerToken)
             .send(blog)
-            .expect(201)
+            .expect(200)
             .expect('Content-Type', /application\/json/)
 
         const modifiedBlog = await api.get(`/api/blogs/${blogToModify.id}`)
@@ -263,11 +270,43 @@ describe('modifying a blog', () => {
             .put(`/api/blogs/${blogToModify.id}`)
             .set('Authorization', bearerToken)
             .send(blog)
-            .expect(201)
+            .expect(200)
             .expect('Content-Type', /application\/json/)
 
         const modifiedBlog = await api.get(`/api/blogs/${blogToModify.id}`)
         expect(modifiedBlog.body).toMatchObject(blog)
+    })
+
+    test('fails with 400 if title is not a string', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToModify = blogsAtStart[0]
+
+        await api
+            .put(`/api/blogs/${blogToModify.id}`)
+            .send({ title: 123, author: 'Author', url: 'http://example.com', likes: 1 })
+            .expect(400)
+    })
+
+    test('fails with 400 if url is not a string', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToModify = blogsAtStart[0]
+
+        await api
+            .put(`/api/blogs/${blogToModify.id}`)
+            .send({ title: 'Valid Title', author: 'Author', url: { $ne: '' }, likes: 1 })
+            .expect(400)
+    })
+
+    test('non-numeric likes defaults to 0', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToModify = blogsAtStart[0]
+
+        const response = await api
+            .put(`/api/blogs/${blogToModify.id}`)
+            .send({ title: 'Valid Title', author: 'Author', url: 'http://example.com', likes: 'not-a-number' })
+            .expect(200)
+
+        expect(response.body.likes).toBe(0)
     })
 })
 
