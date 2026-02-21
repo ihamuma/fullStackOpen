@@ -1,11 +1,12 @@
-import patientData from '../../data/diagnoses';
+import patientData from '../../data/patients';
 
-import { Patient } from '../types';
+import { NonSensitivePatient } from '../types';
 
-const getPatients = (): Patient[] => {
-    return patientData;
+
+const getNonsensitivePatientData = (): NonSensitivePatient[] => {
+    return patientData.map(({ ssn: _ssn, ...rest }) =>  rest ) ;
 };
 
 export default {
-    getPatients,
+    getNonsensitivePatientData
 };
