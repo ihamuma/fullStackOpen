@@ -12,10 +12,12 @@
   },
   "author": "Markus Ihamuotila",
   "license": "ISC",
+  "private": true,
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@stylistic/eslint-plugin": "^5.5.0",
     "@types/express": "^5.0.0",
+    "@types/node": "^16.11.17",
     "eslint": "^9.39.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
@@ -23,7 +25,6 @@
     "typescript-eslint": "^8.46.3"
   },
   "dependencies": {
-    "@types/node": "^16.11.17",
     "express": "^4.22.0"
   }
 }
