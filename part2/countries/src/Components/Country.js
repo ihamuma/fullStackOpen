@@ -1,33 +1,37 @@
-import React, { useState } from 'react'
-import Button from './Button'
-import Weather from './Weather'
+import React, { useState } from "react";
+import Button from "./Button";
+import Weather from "./Weather";
 
 const Country = ({ info, details }) => {
-    const [showDetails, setShowDetails] = useState(details)
-  
-    if (showDetails) {
-      return (
-        <div>
-          <h2>{info.name} <Button text="Hide" onClick={()=>setShowDetails(false)}/></h2>
-          <p>
-            Capital: {info.capital} <br/>
-            Population: {info.population}
-          </p>
-          <h3>Languages</h3>
-          <div>
-            {info.languages.map(language => <p key={language.iso639_1}>• {language.name}</p>)}
-          </div>
-          <img width="300" src={info.flag} alt="" />
-          <Weather location={info.capital} />
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          {info.name} <Button text="Show" onClick={()=>setShowDetails(true)}/>
-        </div>
-      )
-    }
-  }
+  const [showDetails, setShowDetails] = useState(details);
 
-  export default Country
+  if (showDetails) {
+    return (
+      <div>
+        <h2>
+          {info.name} <Button text="Hide" onClick={() => setShowDetails(false)} />
+        </h2>
+        <p>
+          Capital: {info.capital} <br />
+          Population: {info.population}
+        </p>
+        <h3>Languages</h3>
+        <div>
+          {info.languages.map((language) => (
+            <p key={language.iso639_1}>• {language.name}</p>
+          ))}
+        </div>
+        <img width="300" src={info.flag} alt="" />
+        <Weather location={info.capital} />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {info.name} <Button text="Show" onClick={() => setShowDetails(true)} />
+      </div>
+    );
+  }
+};
+
+export default Country;

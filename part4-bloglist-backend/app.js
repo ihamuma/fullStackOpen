@@ -1,63 +1,64 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const rateLimit = require('express-rate-limit')
-const blogsRouter = require('./controllers/blogs')
-const usersRouter = require('./controllers/users')
-const loginRouter = require('./controllers/login')
-const middleware = require('./utils/middleware')
-const config = require('./utils/config')
-const logger = require('./utils/logger')
-const mongoose = require('mongoose')
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const blogsRouter = require("./controllers/blogs");
+const usersRouter = require("./controllers/users");
+const loginRouter = require("./controllers/login");
+const middleware = require("./utils/middleware");
+const config = require("./utils/config");
+const logger = require("./utils/logger");
+const mongoose = require("mongoose");
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: { error: 'too many requests, please try again later' },
-})
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: "too many requests, please try again later" },
+});
 
 const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 10,
-    message: { error: 'too many login attempts, please try again later' },
-})
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "too many login attempts, please try again later" },
+});
 
-mongoose.set('strictQuery', false)
+mongoose.set("strictQuery", false);
 
-logger.info('connecting to config.MONGODB_URI')
+logger.info("connecting to config.MONGODB_URI");
 
-mongoose.connect(config.MONGODB_URI)
-    .then(() => {
-        logger.info('connected to MongoDB')
-    })
-    .catch((error) => {
-        logger.error('error connection to MongoDB:', error.message)
-    })
+mongoose
+  .connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info("connected to MongoDB");
+  })
+  .catch((error) => {
+    logger.error("error connection to MongoDB:", error.message);
+  });
 
-app.use(cors())
-if (process.env.NODE_ENV !== 'test') {
-    app.use(limiter)
+app.use(cors());
+if (process.env.NODE_ENV !== "test") {
+  app.use(limiter);
 }
-app.use(express.static('build'))
-app.use(express.json())
+app.use(express.static("build"));
+app.use(express.json());
 
-app.use(middleware.requestLogger)
-app.use(middleware.tokenExtractor)
+app.use(middleware.requestLogger);
+app.use(middleware.tokenExtractor);
 
-app.use('/api/blogs', blogsRouter)
-app.use('/api/users', usersRouter)
-if (process.env.NODE_ENV !== 'test') {
-    app.use('/api/login', loginLimiter, loginRouter)
+app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usersRouter);
+if (process.env.NODE_ENV !== "test") {
+  app.use("/api/login", loginLimiter, loginRouter);
 } else {
-    app.use('/api/login', loginRouter)
+  app.use("/api/login", loginRouter);
 }
 
-if (process.env.NODE_ENV === 'test') {
-    const testingRouter = require('./controllers/testing')
-    app.use('/api/testing', testingRouter)
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require("./controllers/testing");
+  app.use("/api/testing", testingRouter);
 }
 
-app.use(middleware.errorHandler)
-app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler);
+app.use(middleware.unknownEndpoint);
 
-module.exports = app
+module.exports = app;

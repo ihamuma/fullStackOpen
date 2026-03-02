@@ -1,13 +1,12 @@
 /* eslint-disable no-undef, no-unused-vars */
-const { defineConfig } = require('cypress')
+const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-    e2e: {
-        setupNodeEvents(on, config) {
-        },
-        baseUrl: 'http://localhost:3000'
-    },
-    env: {
-        BACKEND: 'http://localhost:3003/api'
-    }
-})
+  e2e: {
+    setupNodeEvents(on, config) {},
+    baseUrl: "http://localhost:3000",
+  },
+  env: {
+    BACKEND: "http://localhost:3003/api",
+  },
+});

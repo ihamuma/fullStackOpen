@@ -2,14 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "axios": "^1.13.5",
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -19,15 +11,24 @@
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "axios": "^1.13.5",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "cypress": "^14.0.3",
+    "eslint-plugin-cypress": "^2.13.2"
   },
   "overrides": {
-    "minimatch": "^10.2.1",
-    "@babel/core": "^7.26.0"
+    "@babel/core": "^7.26.0",
+    "minimatch": "^10.2.1"
   },
   "browserslist": {
     "production": [
@@ -41,12 +42,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3003",
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "cypress": "^14.0.3",
-    "eslint-plugin-cypress": "^2.13.2"
-  }
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "proxy": "http://localhost:3003"
 }
