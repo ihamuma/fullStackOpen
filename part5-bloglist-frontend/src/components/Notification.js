@@ -1,27 +1,23 @@
-import { useState, useEffect } from 'react'
-import '../index.css'
+import { useState, useEffect } from "react";
+import "../index.css";
 
 const Notification = ({ message }) => {
-    const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
-    useEffect(() => {
-        if (message) {
-            setVisible(true)
-            setTimeout(() => {
-                setVisible(false)
-            }, 5000)
-        }
-    }, [message])
-
-    if (!visible || !message) {
-        return null
+  useEffect(() => {
+    if (message) {
+      setVisible(true);
+      setTimeout(() => {
+        setVisible(false);
+      }, 5000);
     }
+  }, [message]);
 
-    return (
-        <div className={ message.class }>
-            { message.text }
-        </div>
-    )
-}
+  if (!visible || !message) {
+    return null;
+  }
 
-export default Notification
+  return <div className={message.class}>{message.text}</div>;
+};
+
+export default Notification;

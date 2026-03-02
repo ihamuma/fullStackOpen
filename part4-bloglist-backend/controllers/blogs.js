@@ -1,100 +1,98 @@
-const blogsRouter = require('express').Router()
-const mongoose = require('mongoose')
-const Blog = require('../models/blog')
-const User = require('../models/user')
-const { userExtractor } = require('../utils/middleware')
+const blogsRouter = require("express").Router();
+const mongoose = require("mongoose");
+const Blog = require("../models/blog");
+const User = require("../models/user");
+const { userExtractor } = require("../utils/middleware");
 
-blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({})
-        .populate('user', { username: 1, name: 1 })
+blogsRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
 
-    response.json(blogs)
-})
+  response.json(blogs);
+});
 
-blogsRouter.get('/:id', async (request, response) => {
-    if (!mongoose.isValidObjectId(request.params.id)) {
-        return response.status(400).json({ error: 'invalid id' })
-    }
-    const blog = await Blog.findById(request.params.id)
-    if (blog) {
-        response.json(blog)
-    } else {
-        response.status(404).end()
-    }
-})
+blogsRouter.get("/:id", async (request, response) => {
+  if (!mongoose.isValidObjectId(request.params.id)) {
+    return response.status(400).json({ error: "invalid id" });
+  }
+  const blog = await Blog.findById(request.params.id);
+  if (blog) {
+    response.json(blog);
+  } else {
+    response.status(404).end();
+  }
+});
 
-blogsRouter.post('/', userExtractor, async (request, response) => {
-    const body = request.body
+blogsRouter.post("/", userExtractor, async (request, response) => {
+  const body = request.body;
 
-    if (!body.title) {
-        return response.status(400).json({
-            error: 'Title missing'
-        })
-    }
-    if (!body.url) {
-        return response.status(400).json({
-            error: 'URL missing'
-        })
-    }
+  if (!body.title) {
+    return response.status(400).json({
+      error: "Title missing",
+    });
+  }
+  if (!body.url) {
+    return response.status(400).json({
+      error: "URL missing",
+    });
+  }
 
-    const user = await User.findById(request.user)
+  const user = await User.findById(request.user);
 
-    const blog = new Blog({
-        title: String(body.title),
-        author: body.author !== undefined ? String(body.author) : undefined,
-        url: String(body.url),
-        likes: Number(body.likes) || 0,
-        user: user.id
-    })
+  const blog = new Blog({
+    title: String(body.title),
+    author: body.author !== undefined ? String(body.author) : undefined,
+    url: String(body.url),
+    likes: Number(body.likes) || 0,
+    user: user.id,
+  });
 
-    const savedBlog = await blog.save()
-    user.blogs = user.blogs.concat(savedBlog.id)
-    await user.save()
+  const savedBlog = await blog.save();
+  user.blogs = user.blogs.concat(savedBlog.id);
+  await user.save();
 
-    response.status(201).json(savedBlog)
-})
+  response.status(201).json(savedBlog);
+});
 
-blogsRouter.delete('/:id', userExtractor, async (request, response) => {
-    if (!mongoose.isValidObjectId(request.params.id)) {
-        return response.status(400).json({ error: 'invalid id' })
-    }
-    const user = request.user
-    const blogToDelete = await Blog.findById(request.params.id)
+blogsRouter.delete("/:id", userExtractor, async (request, response) => {
+  if (!mongoose.isValidObjectId(request.params.id)) {
+    return response.status(400).json({ error: "invalid id" });
+  }
+  const user = request.user;
+  const blogToDelete = await Blog.findById(request.params.id);
 
-    if (!blogToDelete) {
-        return response.status(404).json({ error: 'blog not found' })
-    }
+  if (!blogToDelete) {
+    return response.status(404).json({ error: "blog not found" });
+  }
 
-    if (blogToDelete.user.toString() === user) {
-        await Blog.findByIdAndRemove(request.params.id)
-        response.status(204).end()
-    } else {
-        response.status(401).json({
-            error: 'token must belong to user who created blog'
-        })
-    }
-})
+  if (blogToDelete.user.toString() === user) {
+    await Blog.findByIdAndRemove(request.params.id);
+    response.status(204).end();
+  } else {
+    response.status(401).json({
+      error: "token must belong to user who created blog",
+    });
+  }
+});
 
-blogsRouter.put('/:id', async (request, response) => {
-    if (!mongoose.isValidObjectId(request.params.id)) {
-        return response.status(400).json({ error: 'invalid id' })
-    }
-    const { title, author, url, likes } = request.body
+blogsRouter.put("/:id", async (request, response) => {
+  if (!mongoose.isValidObjectId(request.params.id)) {
+    return response.status(400).json({ error: "invalid id" });
+  }
+  const { title, author, url, likes } = request.body;
 
-    if (typeof title !== 'string' || typeof url !== 'string') {
-        return response.status(400).json({ error: 'title and url must be strings' })
-    }
+  if (typeof title !== "string" || typeof url !== "string") {
+    return response.status(400).json({ error: "title and url must be strings" });
+  }
 
-    const blog = {
-        title: String(title),
-        author: author !== undefined ? String(author) : undefined,
-        url: String(url),
-        likes: Number(likes) || 0
-    }
+  const blog = {
+    title: String(title),
+    author: author !== undefined ? String(author) : undefined,
+    url: String(url),
+    likes: Number(likes) || 0,
+  };
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    response.status(200).json(updatedBlog)
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true });
+  response.status(200).json(updatedBlog);
+});
 
-})
-
-module.exports = blogsRouter
+module.exports = blogsRouter;
